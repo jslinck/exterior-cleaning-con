@@ -19,7 +19,9 @@ export function Lineup() {
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {speakers.map((speaker) => (
+          {speakers.map((speaker) => {
+            const isPlaceholder = !speaker.handle;
+            return (
             <div
               key={speaker.id}
               className="flex flex-col gap-5 rounded-2xl border border-bone/10 bg-charcoal/50 p-6"
@@ -27,13 +29,19 @@ export function Lineup() {
               <div className="flex items-center gap-4">
                 <div
                   aria-hidden="true"
-                  className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-ember to-ember-light font-display text-xl text-ink"
+                  className={
+                    isPlaceholder
+                      ? "flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-dashed border-bone/25 font-display text-xl text-bone/30"
+                      : "flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-ember to-ember-light font-display text-xl text-ink"
+                  }
                 >
-                  {getInitials(speaker.name)}
+                  {isPlaceholder ? "?" : getInitials(speaker.name)}
                 </div>
                 <div>
                   <h3 className="font-display text-xl text-bone">{speaker.name}</h3>
-                  <p className="text-sm text-bone/50">{speaker.handle}</p>
+                  {!isPlaceholder && (
+                    <p className="text-sm text-bone/50">{speaker.handle}</p>
+                  )}
                 </div>
               </div>
 
@@ -47,7 +55,8 @@ export function Lineup() {
 
               <p className="text-sm leading-relaxed text-bone/60">{speaker.bio}</p>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <p className="mt-10 max-w-3xl text-sm leading-relaxed text-bone/40">

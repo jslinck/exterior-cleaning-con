@@ -145,5 +145,5 @@ export const lineupSection = {
   eyebrow: "Founding Creator Lineup",
   headline: "The people we're building this around.",
   body: "We're assembling the biggest creators and operators in exterior cleaning to headline EXTERIOR CON. Nobody below is confirmed yet — this is the target lineup we're actively building toward, and we'll announce names publicly the moment they're locked.",
-  disclaimer: "None of the creators or operators below are confirmed to appear. Names shown reflect who we are in conversation with.",
+  disclaimer: "We're in active conversations with creators and operators across the industry, but nobody is signed yet — so we're not naming names until they're locked. Slots below will be filled in as speakers are confirmed.",
 };
