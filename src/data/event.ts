@@ -55,19 +55,19 @@ export const identity = {
       day: "Friday",
       word: "Build",
       description:
-        "Lay the foundation — sales, door-to-door, pricing, operations, systems, mindset, and building your first great team.",
+        "Get customers — door-to-door, organic content, affiliate marketing, Meta ads, and Google ads.",
     },
     {
       day: "Saturday",
       word: "Scale",
       description:
-        "Turn a functioning business into a scalable company — leadership, hiring, marketing, technology, automation, and financial growth.",
+        "Turn a functioning business into a scalable company — operations, systems, hiring, and automation.",
     },
     {
       day: "Sunday",
       word: "Dominate",
       description:
-        "Become the market leader — brand, strategy, competitive advantage, expansion, wealth, and a 90-day plan to make it real.",
+        "Become the market leader — leadership, brand, strategy, expansion, wealth, and a 90-day plan to make it real.",
     },
   ],
 };
@@ -129,23 +129,23 @@ export const schedule = [
   {
     day: "Friday",
     title: "Build",
-    tracks: ["Sales", "Marketing", "Operations", "Systems"],
+    tracks: ["Door-to-Door", "Organic", "Affiliate Marketing", "Meta", "Google"],
     description:
-      "Day one is about the foundation — door-to-door sales, pricing, marketing, operations, systems, mindset, and building your first great team.",
+      "Day one is about marketing — door-to-door, organic content, affiliate partnerships, Meta ads, and Google ads: the channels that actually put customers in front of your business.",
   },
   {
     day: "Saturday",
     title: "Scale",
-    tracks: ["Hiring", "Leadership", "Automation", "Finance"],
+    tracks: ["Hiring", "Operations", "Systems", "Automation", "Finance"],
     description:
-      "Day two is about turning a functioning business into a scalable company — leadership, hiring, marketing technology, automation, management, and the financial moves that scale revenue and teams together.",
+      "Day two is about turning a functioning business into a scalable company — operations, systems, hiring, automation, management, and the financial moves that scale revenue and teams together.",
   },
   {
     day: "Sunday",
     title: "Dominate",
     tracks: ["Strategy", "Brand", "Expansion", "Leadership", "90-Day Plan"],
     description:
-      "Day three is about becoming a market leader — brand, competitive strategy, expansion, wealth, and long-term vision, closing with a working 90-day plan to make it real.",
+      "Day three is about becoming a market leader — leadership, brand, competitive strategy, expansion, wealth, and long-term vision, closing with a working 90-day plan to make it real.",
   },
 ] as const;
 
