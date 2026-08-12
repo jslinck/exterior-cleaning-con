@@ -6,6 +6,7 @@ import { Identity } from "@/components/sections/Identity";
 import { WhyThisExists } from "@/components/sections/WhyThisExists";
 import { Experience } from "@/components/sections/Experience";
 import { Schedule } from "@/components/sections/Schedule";
+import { Roadmap } from "@/components/sections/Roadmap";
 import { Lineup } from "@/components/sections/Lineup";
 import { Tickets } from "@/components/sections/Tickets";
 import { SaturdayNight } from "@/components/sections/SaturdayNight";
@@ -23,6 +24,7 @@ export default function Home() {
         <WhyThisExists />
         <Experience />
         <Schedule />
+        <Roadmap />
         <Lineup />
         <Tickets />
         <SaturdayNight />

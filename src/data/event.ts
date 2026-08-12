@@ -49,25 +49,27 @@ export const identity = {
   eyebrow: "The Philosophy",
   headline: "Build. Scale. Dominate.",
   intro:
-    "This isn't a tagline — it's the actual structure of the weekend. Three days, three phases, one intentional progression from the foundation of your business to the market leader you're building it to become.",
+    "Three days. One progression. This isn't a schedule label — it's the actual stages of building a major exterior-service company, in order.",
   steps: [
     {
       day: "Friday",
       word: "Build",
-      description:
-        "Get customers — door-to-door, organic content, affiliate marketing, Meta ads, and Google ads.",
+      coreIdea: "Create Demand.",
+      description: "Master customer acquisition and create the foundation.",
     },
     {
       day: "Saturday",
       word: "Scale",
+      coreIdea: "Build the Machine.",
       description:
-        "Turn a functioning business into a scalable company — operations, systems, hiring, and automation.",
+        "Build the people, systems, and financial infrastructure to grow.",
     },
     {
       day: "Sunday",
       word: "Dominate",
+      coreIdea: "Expand the Machine.",
       description:
-        "Become the market leader — leadership, brand, strategy, expansion, wealth, and a 90-day plan to make it real.",
+        "Master strategy, brand, expansion, and the path to your next major milestone.",
     },
   ],
 };
@@ -129,25 +131,98 @@ export const schedule = [
   {
     day: "Friday",
     title: "Build",
+    coreIdea: "Create Demand.",
+    coreQuestion: "How do I consistently get customers?",
     tracks: ["Door-to-Door", "Organic", "Affiliate Marketing", "Meta", "Google"],
     description:
-      "Day one is about marketing — door-to-door, organic content, affiliate partnerships, Meta ads, and Google ads: the channels that actually put customers in front of your business.",
+      "Day one is about customer acquisition — marketing, brand positioning, offers, door-to-door sales, lead generation, and the sales engine that takes you from $0 to $20K+ months.",
+    sessions: [
+      "The $0–$20K/Month Sales Engine",
+      "Brand Positioning & Irresistible Offers",
+      "Meta & Google Ads for Home Service",
+      "Sales Psychology & Closing",
+    ],
+    outcome: "I know how to create demand.",
+    note: "BUILD isn't a beginner track — even $2M+ operators come back to sharpen their customer-acquisition engine.",
   },
   {
     day: "Saturday",
     title: "Scale",
+    coreIdea: "Build the Machine.",
+    coreQuestion: "How do I handle more customers without breaking the business?",
     tracks: ["Hiring", "Operations", "Systems", "Automation", "Finance"],
     description:
-      "Day two is about turning a functioning business into a scalable company — operations, systems, hiring, automation, management, and the financial moves that scale revenue and teams together.",
+      "Day two is about everything required to handle significantly more revenue without you becoming the bottleneck — hiring, training, SOPs, CRM, cash flow, and getting the owner out of production.",
+    sessions: [
+      "Hiring & Training Your First Real Team",
+      "Getting the Owner Out of Production",
+      "CRM, SOPs & Quality Control",
+      "Cash Flow, Margins & KPIs",
+    ],
+    outcome: "I know how to turn this into a real company.",
   },
   {
     day: "Sunday",
     title: "Dominate",
+    coreIdea: "Expand the Machine.",
+    coreQuestion: "How do I become a major company?",
     tracks: ["Strategy", "Brand", "Expansion", "Leadership", "90-Day Plan"],
     description:
-      "Day three is about becoming a market leader — leadership, brand, competitive strategy, expansion, wealth, and long-term vision, closing with a working 90-day plan to make it real.",
+      "Day three is strategic and aspirational — geographic expansion, brand, strategic partnerships and acquisitions, capital allocation, and what the owner's role looks like at every stage of growth.",
+    sessions: [
+      "Geographic & Multi-Market Expansion",
+      "Strategic Partnerships & Acquisitions",
+      "Building an Asset, Not Another Job",
+      "The Revenue Roadmap: $250K → $10M+",
+    ],
+    outcome: "I can see exactly where I'm going next.",
   },
 ] as const;
+
+// The signature Sunday feature: what actually changes at each revenue
+// milestone. Educational framework, not a guarantee — keep the disclaimer
+// intact wherever this is rendered.
+export const roadmap = {
+  eyebrow: "The Roadmap",
+  headline: "What actually changes at each level.",
+  intro:
+    "Sunday's centerpiece: a milestone-by-milestone look at what changes as an exterior-service company grows — so you know exactly what you're building toward next.",
+  disclaimer:
+    "An educational framework, not a rulebook — every business's path looks a little different.",
+  milestones: [
+    {
+      revenue: "$250K",
+      category: "Foundation",
+      change: "Establish the foundation.",
+    },
+    {
+      revenue: "$500K",
+      category: "Systems",
+      change: "Build management and repeatable systems.",
+    },
+    {
+      revenue: "$1M",
+      category: "Owner Role",
+      change: "Stop being the center of every operation.",
+    },
+    {
+      revenue: "$2.5M",
+      category: "Leadership",
+      change: "Build real leadership and departmental infrastructure.",
+    },
+    {
+      revenue: "$5M",
+      category: "Expansion",
+      change: "Think strategically about markets, brand, and expansion.",
+    },
+    {
+      revenue: "$10M+",
+      category: "Enterprise",
+      change:
+        "Executive leadership, capital allocation, acquisitions, and long-term enterprise strategy.",
+    },
+  ],
+} as const;
 
 export const vip = {
   eyebrow: "VIP Access",

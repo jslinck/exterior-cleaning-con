@@ -40,6 +40,9 @@ export function Identity() {
                 {step.word.toUpperCase()}
               </span>
               <span aria-hidden="true" className="h-1 w-16 bg-ember" />
+              <p className="font-display text-xl tracking-wide text-ember sm:text-2xl">
+                {step.coreIdea}
+              </p>
               <p className="max-w-xs text-sm leading-relaxed text-bone/60">
                 {step.description}
               </p>
