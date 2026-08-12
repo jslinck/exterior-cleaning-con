@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Skyline } from "@/components/ui/Skyline";
 import { Wordmark } from "@/components/ui/Logo";
-import { brand, ctas, event } from "@/data/event";
+import { ctas, event } from "@/data/event";
 
 export function Hero() {
   return (
@@ -25,12 +25,11 @@ export function Hero() {
       <Container className="relative z-10">
         <div className="flex max-w-4xl flex-col gap-8 animate-fade-up">
           <h1>
-            <Wordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-[9rem]" />
+            <Wordmark
+              className="h-auto w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl"
+              priority
+            />
           </h1>
-
-          <p className="font-display text-xl tracking-[0.25em] text-ember sm:text-2xl md:text-3xl">
-            {brand.tagline}
-          </p>
 
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-bone/70">
             <span className="rounded-full border border-ember/40 bg-ember/10 px-4 py-1.5 text-ember">

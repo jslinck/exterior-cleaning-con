@@ -1,78 +1,59 @@
-// Brand marks for EXTERIOR CON, built in code to match the reference
-// brand sheet (angular "EC" monogram with an orange accent flag, and the
-// "EXTERIOR CON" wordmark with a skewed orange bar under EXTERIOR and
-// wide-tracked CON). These are hand-built SVG/CSS recreations from
-// reference images, not a trace of a supplied vector file — swap in real
-// brand assets here if/when final logo files exist.
+// Brand marks for EXTERIOR CON — official supplied logo assets.
+//
+// IMPORTANT: these are the client's locked, final brand PNGs
+// (public/logos/ec-mark.png, public/logos/exterior-con-wordmark.png).
+// Do not redraw, retrace, recolor, or otherwise recreate these in
+// CSS/SVG — reference the files as-is. Sizing must scale the image
+// proportionally (width OR height, never both independently) so the
+// aspect ratio is always preserved.
 
-export function Mark({ className = "" }: { className?: string }) {
+import Image from "next/image";
+
+// Intrinsic source dimensions — required by next/image, and used so
+// every consumer scales proportionally instead of stretching either axis.
+const MARK_SIZE = { width: 1536, height: 1024 };
+const WORDMARK_SIZE = { width: 1536, height: 1024 };
+
+// NOTE: `className` must supply sizing (e.g. "h-12 w-auto" or
+// "w-full h-auto") — intentionally no default h-*/w-* here, since mixing
+// a default with a caller override is unreliable across Tailwind's
+// cascade. Always pass both axes explicitly (one fixed, one `auto`) so
+// the image scales proportionally instead of stretching.
+
+export function Mark({
+  className = "",
+  priority = false,
+}: {
+  className?: string;
+  priority?: boolean;
+}) {
   return (
-    <svg
-      viewBox="0 0 240 240"
-      className={className}
-      aria-hidden="true"
-    >
-      <polygon points="36,0 166,0 150,40 20,40" fill="currentColor" />
-      <polygon points="36,64 126,64 110,104 20,104" fill="currentColor" />
-      <polygon points="20,0 36,0 36,104 20,104" fill="currentColor" />
-      <path
-        d="M 20,104
-           C 18,175 45,225 110,228
-           C 155,230 190,205 208,155
-           L 168,158
-           C 150,172 130,185 100,183
-           C 60,180 42,150 40,104
-           Z"
-        fill="currentColor"
-      />
-      <polygon points="178,132 226,124 216,168 168,178" fill="var(--color-ember)" />
-    </svg>
+    <Image
+      src="/logos/ec-mark.png"
+      alt="EXTERIOR CON"
+      width={MARK_SIZE.width}
+      height={MARK_SIZE.height}
+      priority={priority}
+      className={`object-contain ${className}`}
+    />
   );
 }
 
 export function Wordmark({
   className = "",
-  align = "start",
+  priority = false,
 }: {
   className?: string;
-  align?: "start" | "center";
+  priority?: boolean;
 }) {
   return (
-    <span
-      className={`inline-flex flex-col leading-none ${
-        align === "center" ? "items-center" : "items-start"
-      } ${className}`}
-    >
-      <span className="font-display inline-block -skew-x-[8deg] text-bone">
-        EXTERIOR
-      </span>
-      <span className="mt-[0.16em] flex items-center gap-[0.3em]">
-        <span
-          aria-hidden="true"
-          className="h-[0.22em] w-[1.9em] bg-ember"
-          style={{ clipPath: "polygon(3% 0,100% 0,97% 100%,0% 100%)" }}
-        />
-        <span className="font-display -skew-x-[8deg] text-[0.4em] tracking-[0.35em] text-bone">
-          CON
-        </span>
-      </span>
-    </span>
-  );
-}
-
-export function Lockup({
-  className = "",
-  markClassName = "h-10 w-10 text-bone",
-  wordmarkClassName = "text-xl",
-}: {
-  className?: string;
-  markClassName?: string;
-  wordmarkClassName?: string;
-}) {
-  return (
-    <span className={`inline-flex items-center gap-3 ${className}`}>
-      <Mark className={markClassName} />
-      <Wordmark className={wordmarkClassName} />
-    </span>
+    <Image
+      src="/logos/exterior-con-wordmark.png"
+      alt="EXTERIOR CON — Build · Scale · Dominate"
+      width={WORDMARK_SIZE.width}
+      height={WORDMARK_SIZE.height}
+      priority={priority}
+      className={`object-contain ${className}`}
+    />
   );
 }

@@ -1,5 +1,5 @@
 import { Container } from "@/components/ui/Container";
-import { Lockup } from "@/components/ui/Logo";
+import { Mark } from "@/components/ui/Logo";
 import { brand, event } from "@/data/event";
 
 export function Footer() {
@@ -7,10 +7,7 @@ export function Footer() {
     <footer className="border-t border-bone/10 bg-ink py-10">
       <Container className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
         <div className="flex flex-col items-center gap-2 sm:items-start">
-          <Lockup
-            markClassName="h-9 w-9 text-bone"
-            wordmarkClassName="text-base"
-          />
+          <Mark className="h-16 w-auto" />
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ember">
             {brand.tagline}
           </p>

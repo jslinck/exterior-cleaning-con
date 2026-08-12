@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Lockup } from "@/components/ui/Logo";
+import { Mark } from "@/components/ui/Logo";
 import { ctas } from "@/data/event";
 
 const links = [
@@ -31,10 +31,7 @@ export function Nav() {
     >
       <Container className="flex h-16 items-center justify-between md:h-20">
         <a href="#top" aria-label="EXTERIOR CON — home">
-          <Lockup
-            markClassName="h-8 w-8 text-bone md:h-9 md:w-9"
-            wordmarkClassName="text-base md:text-lg"
-          />
+          <Mark className="h-12 w-auto md:h-14" priority />
         </a>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
