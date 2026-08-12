@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { Lockup } from "@/components/ui/Logo";
-import { event } from "@/data/event";
+import { brand, event } from "@/data/event";
 
 export function Footer() {
   return (
@@ -11,6 +11,9 @@ export function Footer() {
             markClassName="h-9 w-9 text-bone"
             wordmarkClassName="text-base"
           />
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ember">
+            {brand.tagline}
+          </p>
           <p className="text-xs uppercase tracking-[0.2em] text-bone/40">
             {event.location} · {event.dateRange}
           </p>

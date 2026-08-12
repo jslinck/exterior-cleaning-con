@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Skyline } from "@/components/ui/Skyline";
 import { Wordmark } from "@/components/ui/Logo";
-import { ctas, event } from "@/data/event";
+import { brand, ctas, event } from "@/data/event";
 
 export function Hero() {
   return (
@@ -24,6 +24,14 @@ export function Hero() {
 
       <Container className="relative z-10">
         <div className="flex max-w-4xl flex-col gap-8 animate-fade-up">
+          <h1>
+            <Wordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-[9rem]" />
+          </h1>
+
+          <p className="font-display text-xl tracking-[0.25em] text-ember sm:text-2xl md:text-3xl">
+            {brand.tagline}
+          </p>
+
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-bone/70">
             <span className="rounded-full border border-ember/40 bg-ember/10 px-4 py-1.5 text-ember">
               {event.location}
@@ -32,10 +40,6 @@ export function Hero() {
               {event.dateRange}
             </span>
           </div>
-
-          <h1>
-            <Wordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-[9rem]" />
-          </h1>
 
           <p className="max-w-2xl text-lg font-medium text-bone sm:text-xl md:text-2xl">
             {event.headline}

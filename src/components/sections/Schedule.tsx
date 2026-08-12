@@ -7,9 +7,9 @@ export function Schedule() {
     <section id="schedule" className="relative bg-charcoal/30 py-24 md:py-32">
       <Container>
         <div className="max-w-2xl">
-          <Eyebrow>The Progression</Eyebrow>
+          <Eyebrow>Education</Eyebrow>
           <h2 className="mt-6 font-display text-4xl leading-[1.05] text-bone sm:text-5xl md:text-6xl">
-            Get customers. Build the machine. Scale.
+            Every session maps to Build, Scale, or Dominate.
           </h2>
         </div>
 
@@ -21,7 +21,7 @@ export function Schedule() {
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-[0.3em] text-bone/50">
-                  Day {i + 1} — {day.day}
+                  {day.day}
                 </span>
                 <span className="font-display text-3xl text-ember/60">
                   {String(i + 1).padStart(2, "0")}
@@ -29,7 +29,7 @@ export function Schedule() {
               </div>
 
               <h3 className="font-display text-3xl leading-none text-bone sm:text-4xl">
-                {day.title}
+                {day.title.toUpperCase()}
               </h3>
 
               <div className="flex flex-wrap gap-2">

@@ -14,12 +14,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "EXTERIOR CON 2027 | Phoenix, Arizona",
+  title: "EXTERIOR CON 2027 | Build · Scale · Dominate",
   description:
-    "EXTERIOR CON is the premium business summit for exterior-cleaning entrepreneurs. Phoenix, Arizona · February 26–28, 2027. Build a bigger business. Build a better life.",
+    "EXTERIOR CON is the premium business summit for exterior-cleaning entrepreneurs. Phoenix, Arizona · February 26–28, 2027. Build. Scale. Dominate.",
   metadataBase: new URL("https://exteriorcon.com"),
   openGraph: {
-    title: "EXTERIOR CON 2027 | Phoenix, Arizona",
+    title: "EXTERIOR CON 2027 | Build · Scale · Dominate",
     description:
       "The premium business summit for exterior-cleaning entrepreneurs. Feb 26–28, 2027 · Phoenix, AZ.",
     type: "website",

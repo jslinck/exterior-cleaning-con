@@ -19,6 +19,18 @@ export const event = {
   targetAttendance: 400,
 };
 
+// The central brand philosophy and the literal structure of the three days.
+// Reused across the hero, the identity section, and the education/schedule
+// section — keep this in sync with `schedule` below.
+export const brand = {
+  tagline: "BUILD · SCALE · DOMINATE",
+  pillars: [
+    { day: "Friday", word: "Build" },
+    { day: "Saturday", word: "Scale" },
+    { day: "Sunday", word: "Dominate" },
+  ],
+};
+
 export const ctas = {
   primary: "Join the Founding List",
   secondary: "See the Experience",
@@ -33,13 +45,40 @@ export const stats = [
   { value: "12", label: "Tactical Workshops", suffix: "+" },
 ] as const;
 
+export const identity = {
+  eyebrow: "The Philosophy",
+  headline: "Build. Scale. Dominate.",
+  intro:
+    "This isn't a tagline — it's the actual structure of the weekend. Three days, three phases, one intentional progression from the foundation of your business to the market leader you're building it to become.",
+  steps: [
+    {
+      day: "Friday",
+      word: "Build",
+      description:
+        "Lay the foundation — sales, door-to-door, pricing, operations, systems, mindset, and building your first great team.",
+    },
+    {
+      day: "Saturday",
+      word: "Scale",
+      description:
+        "Turn a functioning business into a scalable company — leadership, hiring, marketing, technology, automation, and financial growth.",
+    },
+    {
+      day: "Sunday",
+      word: "Dominate",
+      description:
+        "Become the market leader — brand, strategy, competitive advantage, expansion, wealth, and a 90-day plan to make it real.",
+    },
+  ],
+};
+
 export const whyThisExists = {
   eyebrow: "Why This Exists",
   headline: "The exterior-cleaning industry outgrew its conferences.",
   body: [
     "Most trade conferences were built for a different generation, in a different decade — folding chairs, fluorescent lights, and panels about topics nobody's business actually runs on anymore.",
     "The operators building real businesses right now — window cleaning, pressure washing, solar cleaning, and everything exterior — are younger, faster, and building in public. They're learning Meta ads, personal branding, and recurring revenue, not just how to bid a job.",
-    "EXTERIOR CON is built from scratch for that operator. Premium production, tactical content, and an environment that feels like the business you're trying to build — not the one you're trying to leave behind.",
+    "EXTERIOR CON is built from scratch for that operator: more modern, more tactical, more creator-driven, more experiential, more social, and more ambitious than the conference you grew up going to.",
   ],
 };
 
@@ -76,29 +115,37 @@ export const experiences = [
     title: "Live Business Teardowns",
     description: "Real companies, real numbers, torn down live on stage by operators who've been there.",
   },
+  {
+    title: "Awards",
+    description: "Recognizing the operators actually building — growth, brand, and the businesses raising the bar.",
+  },
+  {
+    title: "90-Day Business Planning",
+    description: "Leave Sunday with a working 90-day plan, not just a notebook full of ideas.",
+  },
 ] as const;
 
 export const schedule = [
   {
     day: "Friday",
-    title: "Get Customers",
-    tracks: ["Sales", "Marketing", "Personal Brand"],
+    title: "Build",
+    tracks: ["Sales", "Marketing", "Operations", "Systems"],
     description:
-      "Day one is about demand. Door-to-door sales, Meta and paid advertising, and building a personal brand that generates inbound leads on its own.",
+      "Day one is about the foundation — door-to-door sales, pricing, marketing, operations, systems, mindset, and building your first great team.",
   },
   {
     day: "Saturday",
-    title: "Build the Machine",
-    tracks: ["Hiring", "Operations", "Finance", "Leadership"],
+    title: "Scale",
+    tracks: ["Hiring", "Leadership", "Automation", "Finance"],
     description:
-      "Day two is about the business behind the business — hiring and managing teams, tightening operations, understanding your numbers, and leading like an owner, not a technician.",
+      "Day two is about turning a functioning business into a scalable company — leadership, hiring, marketing technology, automation, management, and the financial moves that scale revenue and teams together.",
   },
   {
     day: "Sunday",
-    title: "Scale",
-    tracks: ["Recurring Revenue", "Expansion", "Leadership", "90-Day Plan"],
+    title: "Dominate",
+    tracks: ["Strategy", "Brand", "Expansion", "Leadership", "90-Day Plan"],
     description:
-      "Day three is about what's next — building recurring revenue, expanding into new markets and services, and leaving with a working 90-day plan for your business.",
+      "Day three is about becoming a market leader — brand, competitive strategy, expansion, wealth, and long-term vision, closing with a working 90-day plan to make it real.",
   },
 ] as const;
 
@@ -109,24 +156,50 @@ export const vip = {
     "VIP is for operators who want to sit closer, move faster, and get real time with the people on stage — not just watch the summit happen.",
   perks: [
     "First 4 rows reserved at main stage",
-    "Access to the VIP lounge all three days",
-    "Separate VIP check-in — skip the main line",
-    "Early entry to general sessions",
-    "Scheduled access to speakers & creators",
-    "VIP-only networking & reception opportunities",
+    "VIP lounge access, all 3 days",
+    "VIP-only networking opportunities",
+    "Enhanced speaker & creator access",
+    "Priority entry & check-in",
+    "Premium VIP welcome package",
+  ],
+};
+
+export const elite = {
+  eyebrow: "Elite Access",
+  headline: "Only 20 available. By design.",
+  description:
+    "Elite isn't a bigger badge — it's a genuinely different weekend. A small, concierge-run experience for operators who want direct time with the people on stage, not just a seat in the room.",
+  availability: "Only 20 Elite tickets available for EXTERIOR CON 2027.",
+  perks: [
+    "Private dinner with featured speakers, creators & industry leaders",
+    "Exclusive speaker & creator meet & greet",
+    "Backstage access to Saturday night's concert",
+    "Artist meet & greet",
+    "Elite-only networking",
+    "Exclusive Elite gift package",
+    "Concierge-style experience throughout the weekend",
   ],
 };
 
 export const saturdayNight = {
   eyebrow: "Saturday Night",
   headline: "The summit ends with a live concert.",
-  body: "Three days of building your business. One night to celebrate it. Details on the lineup are coming — for now, save the date and clear your Saturday night.",
+  body: "Three days of building your business. One night the summit turns into a full entertainment experience — live concert, DJ, creator appearances, and networking, with the same high-energy nightlife atmosphere as a festival. Details on the lineup are coming — for now, save the date and clear your Saturday night.",
 };
 
 export const sponsors = {
   eyebrow: "Sponsor & Expo",
   headline: "The companies building exterior service, on the floor.",
-  body: "Leading companies serving window cleaning, pressure washing, solar, and exterior-service businesses will run hands-on activations and booths throughout the summit — software, equipment, financing, and more. Sponsor lineup will be announced as partners are confirmed.",
+  body: "Leading companies serving window cleaning, pressure washing, solar, and exterior-service businesses will run hands-on activations and booths throughout the summit. Sponsor lineup will be announced as partners are confirmed.",
+  categories: [
+    "CRM",
+    "Insurance",
+    "Equipment",
+    "Marketing",
+    "Financing",
+    "Payments",
+    "Business Software",
+  ],
 };
 
 export const foundingList = {

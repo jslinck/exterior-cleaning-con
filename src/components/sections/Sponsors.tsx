@@ -14,6 +14,17 @@ export function Sponsors() {
           <p className="mt-6 text-lg leading-relaxed text-bone/70">
             {sponsors.body}
           </p>
+
+          <ul className="mt-8 flex flex-wrap justify-center gap-2">
+            {sponsors.categories.map((category) => (
+              <li
+                key={category}
+                className="rounded-full border border-bone/15 bg-ink px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-bone/60"
+              >
+                {category}
+              </li>
+            ))}
+          </ul>
         </div>
       </Container>
     </section>
