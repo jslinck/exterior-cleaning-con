@@ -32,7 +32,7 @@ export function Nav() {
       <Container className="flex h-16 items-center justify-between md:h-20">
         <a href="#top" aria-label="EXTERIOR CON — home">
           <Lockup
-            markClassName="h-9 w-9 text-lg md:h-10 md:w-10 md:text-xl"
+            markClassName="h-8 w-8 text-bone md:h-9 md:w-9"
             wordmarkClassName="text-base md:text-lg"
           />
         </a>

@@ -8,7 +8,7 @@ export function Footer() {
       <Container className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
         <div className="flex flex-col items-center gap-2 sm:items-start">
           <Lockup
-            markClassName="h-9 w-9 text-lg"
+            markClassName="h-9 w-9 text-bone"
             wordmarkClassName="text-base"
           />
           <p className="text-xs uppercase tracking-[0.2em] text-bone/40">
