@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { ctas, event } from "@/data/event";
+import { Lockup } from "@/components/ui/Logo";
+import { ctas } from "@/data/event";
 
 const links = [
   { href: "#experience", label: "Experience" },
@@ -29,8 +30,11 @@ export function Nav() {
       }`}
     >
       <Container className="flex h-16 items-center justify-between md:h-20">
-        <a href="#top" className="font-display text-xl tracking-wide md:text-2xl">
-          {event.shortName}
+        <a href="#top" aria-label="EXTERIOR CON — home">
+          <Lockup
+            markClassName="h-9 w-9 text-lg md:h-10 md:w-10 md:text-xl"
+            wordmarkClassName="text-base md:text-lg"
+          />
         </a>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (

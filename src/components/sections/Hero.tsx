@@ -36,9 +36,19 @@ export function Hero() {
             <h1 className="font-display leading-[0.9] text-6xl tracking-wide text-bone sm:text-7xl md:text-8xl lg:text-[9rem]">
               EXTERIOR
             </h1>
-            <h1 className="font-display leading-[0.9] text-6xl tracking-[0.15em] text-stroke sm:text-7xl md:text-8xl lg:text-[9rem]">
-              CON
-            </h1>
+            <div className="mt-2 flex items-center gap-4 sm:gap-6 md:mt-4">
+              <span
+                aria-hidden="true"
+                className="h-px w-8 shrink-0 bg-bone/40 sm:w-14 md:w-20"
+              />
+              <h1 className="font-display text-3xl tracking-[0.5em] text-bone sm:text-4xl md:text-5xl">
+                CON
+              </h1>
+              <span
+                aria-hidden="true"
+                className="h-px w-8 shrink-0 bg-bone/40 sm:w-14 md:w-20"
+              />
+            </div>
           </div>
 
           <p className="max-w-2xl text-lg font-medium text-bone sm:text-xl md:text-2xl">

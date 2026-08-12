@@ -70,11 +70,6 @@ body {
   letter-spacing: 0.01em;
 }
 
-.text-stroke {
-  -webkit-text-stroke: 1px color-mix(in oklab, var(--color-bone) 40%, transparent);
-  color: transparent;
-}
-
 .grain {
   position: absolute;
   inset: 0;
