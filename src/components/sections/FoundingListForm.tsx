@@ -29,11 +29,12 @@ export function FoundingListForm() {
       firstName: String(data.get("firstName") || ""),
       lastName: String(data.get("lastName") || ""),
       email: String(data.get("email") || ""),
-      phone: String(data.get("phone") || ""),
+      phone: String(data.get("phone") || "") || undefined,
       instagram: String(data.get("instagram") || ""),
       company: String(data.get("company") || ""),
       revenue: String(data.get("revenue") || "") || undefined,
       learn: String(data.get("learn") || "") || undefined,
+      smsPromotionalConsent: data.get("smsPromotionalConsent") === "on",
     };
 
     try {
@@ -166,13 +167,13 @@ export function FoundingListForm() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="phone" className={labelClasses}>
-                      Phone
+                      Phone{" "}
+                      <span className="normal-case tracking-normal text-bone/30">(optional)</span>
                     </label>
                     <input
                       id="phone"
                       name="phone"
                       type="tel"
-                      required
                       autoComplete="tel"
                       className={inputClasses}
                       placeholder="(555) 123-4567"
@@ -245,6 +246,20 @@ export function FoundingListForm() {
                     className={`${inputClasses} resize-none`}
                     placeholder="Meta ads, hiring, recurring revenue..."
                   />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <label className="flex items-start gap-3 text-xs leading-relaxed text-bone/50">
+                    <input
+                      type="checkbox"
+                      name="smsPromotionalConsent"
+                      className="mt-0.5 h-4 w-4 shrink-0 rounded border-bone/30 bg-ink accent-ember"
+                    />
+                    By checking this box, I consent to receive promotional SMS messages from
+                    EXTERIOR CON, including special offers, service updates, seasonal promotions,
+                    and company announcements. Message frequency may vary. Message and data rates
+                    may apply. Reply STOP to opt out or HELP for help.
+                  </label>
                 </div>
 
                 {status === "error" && error && (

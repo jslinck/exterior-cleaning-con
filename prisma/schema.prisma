@@ -69,12 +69,18 @@ model Lead {
   lastName                String
   email                    String
   emailNormalized          String     @unique
-  phone                    String
+  phone                    String?
   phoneNormalized          String?
   company                  String
   instagram                String
   revenue                  String?
   learn                     String?
+  // TCPA compliance: consent must be voluntary and opt-in, never a
+  // condition of using the form — defaults false and phone itself is
+  // optional. consentCapturedAt gives a timestamped record in case
+  // consent is ever disputed.
+  smsPromotionalConsent    Boolean    @default(false)
+  consentCapturedAt        DateTime?
   creator                  Creator?   @relation(fields: [creatorId], references: [id])
   creatorId                String?
   referralCodeCaptured     String?

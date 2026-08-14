@@ -13,7 +13,7 @@ async function main() {
   let updated = 0;
 
   for (const lead of leads) {
-    const phoneNormalized = normalizePhone(lead.phone) || null;
+    const phoneNormalized = lead.phone ? normalizePhone(lead.phone) || null : null;
     await db.lead.update({ where: { id: lead.id }, data: { phoneNormalized } });
     updated++;
   }

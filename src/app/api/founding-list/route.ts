@@ -7,11 +7,12 @@ export type FoundingListSubmission = {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phone?: string;
   instagram: string;
   company: string;
   revenue?: string;
   learn?: string;
+  smsPromotionalConsent?: boolean;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,18 +26,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { firstName, lastName, email, phone, instagram, company, revenue, learn } = body;
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    instagram,
+    company,
+    revenue,
+    learn,
+    smsPromotionalConsent,
+  } = body;
 
-  if (
-    !firstName?.trim() ||
-    !lastName?.trim() ||
-    !email?.trim() ||
-    !phone?.trim() ||
-    !instagram?.trim() ||
-    !company?.trim()
-  ) {
+  if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !instagram?.trim() || !company?.trim()) {
     return NextResponse.json(
-      { error: "First name, last name, email, phone, Instagram handle, and company are required." },
+      { error: "First name, last name, email, Instagram handle, and company are required." },
       { status: 400 },
     );
   }
@@ -46,17 +50,23 @@ export async function POST(request: NextRequest) {
   }
 
   const emailNormalized = normalizeEmail(email);
+  const trimmedPhone = phone?.trim() || null;
 
   const contactFields = {
     firstName: firstName.trim(),
     lastName: lastName.trim(),
     email: email.trim(),
-    phone: phone.trim(),
-    phoneNormalized: normalizePhone(phone) || null,
+    phone: trimmedPhone,
+    phoneNormalized: trimmedPhone ? normalizePhone(trimmedPhone) || null : null,
     instagram: instagram.trim(),
     company: company.trim(),
     revenue: revenue?.trim() || null,
     learn: learn?.trim() || null,
+    // Always overwritten on every submission — the most recent checkbox
+    // state is the person's current expressed preference, not something
+    // to preserve across a resubmission where they didn't re-check it.
+    smsPromotionalConsent: Boolean(smsPromotionalConsent),
+    consentCapturedAt: new Date(),
   };
 
   // Server-resolved attribution only — never trust anything the client
