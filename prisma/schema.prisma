@@ -65,6 +65,7 @@ model Lead {
   email                    String
   emailNormalized          String     @unique
   phone                    String
+  phoneNormalized          String?
   company                  String
   instagram                String
   revenue                  String?
@@ -80,6 +81,7 @@ model Lead {
 
   @@index([creatorId])
   @@index([source])
+  @@index([phoneNormalized])
 }
 
 // Durable first-touch attribution keyed by a long-lived anonymous visitor
@@ -133,6 +135,7 @@ enum OrderStatus {
 enum AttributionSource {
   CHECKOUT_METADATA_MATCH
   LEAD_EMAIL_MATCH
+  LEAD_PHONE_MATCH
   DIRECT
 }
 

@@ -12,7 +12,8 @@
     "db:seed": "prisma db seed",
     "test:seed": "tsx --env-file=.env scripts/test-seed.ts",
     "webhook:send": "tsx --env-file=.env scripts/send-webhook.ts",
-    "webhook:bulk": "tsx --env-file=.env scripts/bulk-orders.ts"
+    "webhook:bulk": "tsx --env-file=.env scripts/bulk-orders.ts",
+    "backfill:phone": "tsx --env-file=.env scripts/backfill-phone-normalized.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

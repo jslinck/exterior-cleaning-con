@@ -2,6 +2,7 @@ import "server-only";
 import { db } from "@/lib/db";
 import { recomputeCreatorStats } from "@/lib/commission/recompute";
 import { upsertIssuedTicket } from "@/lib/webhooks/handlers/issuedTicket";
+import { normalizeEmail, normalizePhone } from "@/lib/normalize";
 import type { TicketTailorOrderPayload } from "@/lib/webhooks/types";
 
 const ORDER_STATUS_MAP: Record<string, "CONFIRMED" | "CANCELLED" | "REFUNDED" | "PARTIALLY_REFUNDED"> = {
@@ -12,10 +13,6 @@ const ORDER_STATUS_MAP: Record<string, "CONFIRMED" | "CANCELLED" | "REFUNDED" | 
   part_refunded: "PARTIALLY_REFUNDED",
   partially_refunded: "PARTIALLY_REFUNDED",
 };
-
-function normalizeEmail(email: string) {
-  return email.trim().toLowerCase();
-}
 
 function sumTicketPrices(payload: TicketTailorOrderPayload): number {
   if (payload.issued_tickets?.length) {
@@ -75,6 +72,26 @@ export async function handleOrderEvent(payload: TicketTailorOrderPayload) {
       if (lead?.creatorId) {
         creatorId = lead.creatorId;
         attributionSource = "LEAD_EMAIL_MATCH";
+      }
+    }
+
+    // Fallback for a buyer who signed up under one email (or one their
+    // creator captured) but checks out with a different one — e.g. a
+    // checkout link sent through a nurture sequence. Only trusted when
+    // every matching lead with a phone match agrees on the same creator;
+    // a phone shared across conflicting leads is left unattributed rather
+    // than guessed, same policy as everywhere else in this system.
+    if (!creatorId && payload.buyer_details?.phone) {
+      const buyerPhoneNormalized = normalizePhone(payload.buyer_details.phone);
+      if (buyerPhoneNormalized) {
+        const leads = await db.lead.findMany({
+          where: { phoneNormalized: buyerPhoneNormalized, creatorId: { not: null } },
+        });
+        const distinctCreatorIds = new Set(leads.map((l) => l.creatorId));
+        if (distinctCreatorIds.size === 1) {
+          creatorId = leads[0].creatorId;
+          attributionSource = "LEAD_PHONE_MATCH";
+        }
       }
     }
   }

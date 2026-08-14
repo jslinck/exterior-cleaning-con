@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { resolveVisitorAttribution } from "@/lib/attribution/resolve";
+import { normalizeEmail, normalizePhone } from "@/lib/normalize";
 
 export type FoundingListSubmission = {
   firstName: string;
@@ -44,13 +45,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
 
-  const emailNormalized = email.trim().toLowerCase();
+  const emailNormalized = normalizeEmail(email);
 
   const contactFields = {
     firstName: firstName.trim(),
     lastName: lastName.trim(),
     email: email.trim(),
     phone: phone.trim(),
+    phoneNormalized: normalizePhone(phone) || null,
     instagram: instagram.trim(),
     company: company.trim(),
     revenue: revenue?.trim() || null,
