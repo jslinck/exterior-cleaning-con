@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { elite, vip } from "@/data/event";
+import { elite, vip, ticketsOnSale } from "@/data/event";
 import { tickets } from "@/data/tickets";
+import { getCheckoutUrl } from "@/lib/tickettailor/checkoutLink";
 
-export function Tickets() {
+export async function Tickets() {
+  const checkoutUrl = ticketsOnSale ? await getCheckoutUrl() : null;
+
   return (
     <section id="tickets" className="relative bg-charcoal/30 py-24 md:py-32">
       <Container>
@@ -26,11 +29,13 @@ export function Tickets() {
           <span className="text-bone">$2,997</span>
         </div>
 
-        <p className="mt-8 max-w-2xl rounded-xl border border-ember/30 bg-ember/10 px-5 py-4 text-sm font-medium text-bone/80">
-          Tickets are not yet on sale. Pricing below reflects planned founding
-          pricing — join the founding list for first access before doors
-          open to the public.
-        </p>
+        {!ticketsOnSale && (
+          <p className="mt-8 max-w-2xl rounded-xl border border-ember/30 bg-ember/10 px-5 py-4 text-sm font-medium text-bone/80">
+            Tickets are not yet on sale. Pricing below reflects planned founding
+            pricing — join the founding list for first access before doors
+            open to the public.
+          </p>
+        )}
 
         {/* VIP + Elite narrative */}
         <div className="mt-16 grid gap-6 lg:grid-cols-2">
@@ -127,12 +132,12 @@ export function Tickets() {
               </ul>
 
               <Button
-                href="#founding-list"
+                href={checkoutUrl ?? "#founding-list"}
                 variant={ticket.highlight ? "primary" : "secondary"}
                 size="lg"
                 className="w-full"
               >
-                {ticket.ctaLabel}
+                {checkoutUrl ? ticket.ctaLabel : "Join the Founding List"}
               </Button>
             </div>
           ))}

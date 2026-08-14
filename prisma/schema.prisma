@@ -1,0 +1,277 @@
+// EXTERIOR CON — creator attribution & ticket-sales tracking schema.
+// See /root/.claude/plans/cosmic-napping-bird.md for the design rationale.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  CREATOR
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  role         UserRole
+  creator      Creator?  @relation(fields: [creatorId], references: [id])
+  creatorId    String?   @unique
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+enum CreatorStatus {
+  ACTIVE
+  DISABLED
+}
+
+model Creator {
+  id                     String        @id @default(uuid())
+  name                   String
+  email                  String        @unique
+  instagram              String?
+  referralCode           String        @unique
+  status                 CreatorStatus @default(ACTIVE)
+  participationConfirmed Boolean       @default(false)
+  user                   User?
+  leads                  Lead[]
+  orders                 Order[]
+  visitorAttributions    VisitorAttribution[]
+  commissionRecord       CommissionRecord?
+  reward                 CreatorReward?
+  auditLogs              AuditLog[]
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+
+  @@index([status])
+}
+
+enum LeadSource {
+  CREATOR
+  DIRECT
+}
+
+model Lead {
+  id                      String     @id @default(uuid())
+  firstName               String
+  lastName                String
+  email                    String
+  emailNormalized          String     @unique
+  phone                    String
+  company                  String
+  instagram                String
+  revenue                  String?
+  learn                     String?
+  creator                  Creator?   @relation(fields: [creatorId], references: [id])
+  creatorId                String?
+  referralCodeCaptured     String?
+  source                   LeadSource @default(DIRECT)
+  attributionOverriddenAt  DateTime?
+  attributionOverriddenBy  String?
+  createdAt                DateTime   @default(now())
+  updatedAt                DateTime   @updatedAt
+
+  @@index([creatorId])
+  @@index([source])
+}
+
+// Durable first-touch attribution keyed by a long-lived anonymous visitor
+// cookie. This is the authoritative source of truth for attribution — never
+// trust a client-posted creatorId for anything that affects money.
+model VisitorAttribution {
+  id           String   @id @default(uuid())
+  visitorId    String   @unique
+  creator      Creator? @relation(fields: [creatorId], references: [id])
+  creatorId    String?
+  referralCode String
+  firstTouchAt DateTime @default(now())
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([creatorId])
+}
+
+model TicketTypeConfig {
+  id                       String   @id @default(uuid())
+  key                      String   @unique
+  name                     String
+  price                    Decimal  @db.Decimal(10, 2)
+  capacity                 Int?
+  ticketTailorTicketTypeId String?  @unique
+  active                   Boolean  @default(true)
+  tickets                  Ticket[]
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model CommissionTier {
+  id         String   @id @default(uuid())
+  minTickets Int
+  maxTickets Int?
+  percentage Decimal  @db.Decimal(5, 2)
+  label      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([minTickets])
+}
+
+enum OrderStatus {
+  CONFIRMED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum AttributionSource {
+  CHECKOUT_METADATA_MATCH
+  LEAD_EMAIL_MATCH
+  DIRECT
+}
+
+model Order {
+  id                      String            @id @default(uuid())
+  ticketTailorOrderId     String            @unique
+  buyerEmail              String
+  buyerEmailNormalized    String
+  buyerName               String
+  buyerPhone              String?
+  creator                 Creator?          @relation(fields: [creatorId], references: [id])
+  creatorId               String?
+  attributionSource       AttributionSource @default(DIRECT)
+  attributionCodeCaptured String?
+  currency                String            @default("USD")
+  ticketRevenue           Decimal           @db.Decimal(10, 2) @default(0)
+  fees                    Decimal           @db.Decimal(10, 2) @default(0)
+  status                  OrderStatus       @default(CONFIRMED)
+  purchaseTimestamp       DateTime
+  ticketTailorUpdatedAt   DateTime
+  tickets                 Ticket[]
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+
+  @@index([creatorId])
+  @@index([buyerEmailNormalized])
+  @@index([status])
+}
+
+enum TicketStatus {
+  ISSUED
+  VOIDED
+  REFUNDED
+}
+
+model Ticket {
+  id                       String            @id @default(uuid())
+  ticketTailorTicketId     String            @unique
+  order                    Order             @relation(fields: [orderId], references: [id])
+  orderId                  String
+  ticketTypeConfig         TicketTypeConfig? @relation(fields: [ticketTypeConfigId], references: [id])
+  ticketTypeConfigId       String?
+  ticketTailorTicketTypeId String
+  holderName               String?
+  holderEmail              String?
+  price                    Decimal           @db.Decimal(10, 2)
+  status                   TicketStatus      @default(ISSUED)
+  issuedAt                 DateTime
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
+
+  @@index([orderId])
+  @@index([status])
+  @@index([ticketTypeConfigId])
+}
+
+enum CommissionStatus {
+  PENDING
+  EARNED
+  APPROVED
+  PAID
+  FORFEITED
+}
+
+model CommissionRecord {
+  id                  String           @id @default(uuid())
+  creator             Creator          @relation(fields: [creatorId], references: [id])
+  creatorId           String           @unique
+  ticketsCounted      Int              @default(0)
+  attributableRevenue Decimal          @db.Decimal(10, 2) @default(0)
+  tierPercentage      Decimal          @db.Decimal(5, 2) @default(0)
+  matchedTierId        String?
+  commissionAmount    Decimal          @db.Decimal(10, 2) @default(0)
+  status              CommissionStatus @default(PENDING)
+  paidAmount          Decimal          @db.Decimal(10, 2) @default(0)
+  paidAt              DateTime?
+  paidNote            String?
+  lastRecalculatedAt  DateTime         @default(now())
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+}
+
+enum RewardTier {
+  NONE
+  GA
+  VIP
+}
+
+enum RewardStatus {
+  UNCLAIMED
+  CLAIMED
+  ISSUED
+}
+
+model CreatorReward {
+  id           String       @id @default(uuid())
+  creator      Creator      @relation(fields: [creatorId], references: [id])
+  creatorId    String       @unique
+  unlockedTier RewardTier   @default(NONE)
+  status       RewardStatus @default(UNCLAIMED)
+  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime     @default(now())
+}
+
+model WebhookEvent {
+  id                  String    @id @default(uuid())
+  ticketTailorEventId String    @unique
+  eventType           String
+  payload             Json
+  receivedAt          DateTime  @default(now())
+  processedAt         DateTime?
+  processingError     String?
+
+  @@index([eventType])
+}
+
+enum AuditEventType {
+  LEAD_ATTRIBUTION_OVERRIDDEN
+  ORDER_ATTRIBUTION_OVERRIDDEN
+  COMMISSION_STATUS_CHANGED
+  COMMISSION_AMOUNT_DRIFT_DETECTED
+  REWARD_STATUS_CHANGED
+  CREATOR_CREATED
+  CREATOR_UPDATED
+}
+
+model AuditLog {
+  id            String         @id @default(uuid())
+  type          AuditEventType
+  actorUserId   String?
+  leadId        String?
+  orderId       String?
+  creator       Creator?       @relation(fields: [creatorId], references: [id])
+  creatorId     String?
+  previousValue Json?
+  newValue      Json?
+  reason        String?
+  createdAt     DateTime       @default(now())
+
+  @@index([type])
+  @@index([creatorId])
+}

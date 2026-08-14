@@ -1,0 +1,14 @@
+{
+  "id": "evt-00000000-0000-0000-0000-000000000005",
+  "created_at": "2026-08-14T14:00:00Z",
+  "event": "issued_ticket.created",
+  "resource_url": "https://api.tickettailor.com/v1/issued_tickets/tix-outoforder-0001",
+  "payload": {
+    "id": "tix-outoforder-0001",
+    "order_id": "ord-outoforder-0001",
+    "price": 497,
+    "status": "issued",
+    "issued_at": "2026-08-14T14:00:00Z",
+    "holder_details": { "name": "Ozzy Outoforder", "email": "outoforder-buyer@example.com" }
+  }
+}

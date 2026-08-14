@@ -1,0 +1,31 @@
+{
+  "id": "evt-00000000-0000-0000-0000-000000000004",
+  "created_at": "2026-08-14T13:00:00Z",
+  "event": "order.updated",
+  "resource_url": "https://api.tickettailor.com/v1/orders/ord-metadata-0001",
+  "payload": {
+    "id": "ord-metadata-0001",
+    "status": "refunded",
+    "total_price": 997,
+    "currency": "USD",
+    "buyer_details": {
+      "email": "metadata-buyer@example.com",
+      "first_name": "Mia",
+      "last_name": "Metadata",
+      "phone": "555-0102"
+    },
+    "metadata": { "meta_ref_code": "TESTCODE" },
+    "created_at": "2026-08-14T12:05:00Z",
+    "updated_at": "2026-08-14T13:00:00Z",
+    "issued_tickets": [
+      {
+        "id": "tix-metadata-0001",
+        "order_id": "ord-metadata-0001",
+        "price": 997,
+        "status": "refunded",
+        "issued_at": "2026-08-14T12:05:00Z",
+        "holder_details": { "name": "Mia Metadata", "email": "metadata-buyer@example.com" }
+      }
+    ]
+  }
+}

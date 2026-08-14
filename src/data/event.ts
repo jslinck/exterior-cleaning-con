@@ -19,6 +19,12 @@ export const event = {
   targetAttendance: 400,
 };
 
+// Flip this to true once a real Ticket Tailor event is live and
+// TICKET_TAILOR_CHECKOUT_BASE_URL points at it. Until then, every "Buy
+// Tickets" CTA falls back to the founding-list signup instead of a real
+// checkout link.
+export const ticketsOnSale = false;
+
 // The central brand philosophy and the literal structure of the three days.
 // Reused across the hero, the identity section, and the education/schedule
 // section — keep this in sync with `schedule` below.

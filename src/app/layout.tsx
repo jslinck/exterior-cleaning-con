@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Inter } from "next/font/google";
+import { AttributionCapture } from "@/components/attribution/AttributionCapture";
 import "./globals.css";
 
 const anton = Anton({
@@ -32,7 +33,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${anton.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-ink text-bone">{children}</body>
+      <body className="min-h-full flex flex-col bg-ink text-bone">
+        <AttributionCapture />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,0 +1,30 @@
+{
+  "id": "evt-00000000-0000-0000-0000-000000000099",
+  "created_at": "2026-08-14T15:00:00Z",
+  "event": "order.updated",
+  "resource_url": "https://api.tickettailor.com/v1/orders/21fbf3e7-0562-433e-aa83-2ac336a33ca0",
+  "payload": {
+    "id": "21fbf3e7-0562-433e-aa83-2ac336a33ca0",
+    "status": "refunded",
+    "total_price": 497,
+    "currency": "USD",
+    "buyer_details": {
+      "email": "bulk-buyer-0-1786694530110@example.com",
+      "first_name": "Bulk",
+      "last_name": "Buyer0"
+    },
+    "metadata": { "meta_ref_code": "MILECODE" },
+    "created_at": "2026-08-14T12:20:00Z",
+    "updated_at": "2026-08-14T15:00:00Z",
+    "issued_tickets": [
+      {
+        "id": "b68bf1d4-1508-468f-a5fa-7b754fc2ebd8",
+        "order_id": "21fbf3e7-0562-433e-aa83-2ac336a33ca0",
+        "price": 497,
+        "status": "refunded",
+        "issued_at": "2026-08-14T12:20:00Z",
+        "holder_details": { "name": "Bulk Buyer 0", "email": "bulk-buyer-0-1786694530110@example.com" }
+      }
+    ]
+  }
+}

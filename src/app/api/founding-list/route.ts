@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { resolveVisitorAttribution } from "@/lib/attribution/resolve";
 
 export type FoundingListSubmission = {
   firstName: string;
+  lastName: string;
   email: string;
+  phone: string;
   instagram: string;
   company: string;
   revenue?: string;
@@ -20,11 +24,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { firstName, email, instagram, company, revenue, learn } = body;
+  const { firstName, lastName, email, phone, instagram, company, revenue, learn } = body;
 
-  if (!firstName?.trim() || !email?.trim() || !instagram?.trim() || !company?.trim()) {
+  if (
+    !firstName?.trim() ||
+    !lastName?.trim() ||
+    !email?.trim() ||
+    !phone?.trim() ||
+    !instagram?.trim() ||
+    !company?.trim()
+  ) {
     return NextResponse.json(
-      { error: "First name, email, Instagram handle, and company are required." },
+      { error: "First name, last name, email, phone, Instagram handle, and company are required." },
       { status: 400 },
     );
   }
@@ -33,19 +44,42 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
 
-  const submission: FoundingListSubmission = {
+  const emailNormalized = email.trim().toLowerCase();
+
+  const contactFields = {
     firstName: firstName.trim(),
-    email: email.trim().toLowerCase(),
+    lastName: lastName.trim(),
+    email: email.trim(),
+    phone: phone.trim(),
     instagram: instagram.trim(),
     company: company.trim(),
-    revenue: revenue?.trim() || undefined,
-    learn: learn?.trim() || undefined,
+    revenue: revenue?.trim() || null,
+    learn: learn?.trim() || null,
   };
 
-  // TODO: connect to the founding-list backend / email platform (e.g. a
-  // CRM, ESP like Klaviyo/Mailchimp, or a database). For now this just
-  // logs the submission server-side so the flow is fully wired end to end.
-  console.log("[founding-list] new signup", submission);
+  // Server-resolved attribution only — never trust anything the client
+  // posts for this. First-touch is permanent: this is read once, at
+  // create time, and never overwrites an existing lead's attribution.
+  const attribution = await resolveVisitorAttribution();
+
+  const existing = await db.lead.findUnique({ where: { emailNormalized } });
+
+  if (existing) {
+    await db.lead.update({
+      where: { emailNormalized },
+      data: contactFields,
+    });
+  } else {
+    await db.lead.create({
+      data: {
+        ...contactFields,
+        emailNormalized,
+        creatorId: attribution?.creatorId ?? null,
+        referralCodeCaptured: attribution?.referralCode ?? null,
+        source: attribution ? "CREATOR" : "DIRECT",
+      },
+    });
+  }
 
   return NextResponse.json({ ok: true });
 }

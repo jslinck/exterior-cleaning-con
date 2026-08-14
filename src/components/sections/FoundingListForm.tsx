@@ -27,7 +27,9 @@ export function FoundingListForm() {
     const data = new FormData(form);
     const payload: FoundingListSubmission = {
       firstName: String(data.get("firstName") || ""),
+      lastName: String(data.get("lastName") || ""),
       email: String(data.get("email") || ""),
+      phone: String(data.get("phone") || ""),
       instagram: String(data.get("instagram") || ""),
       company: String(data.get("company") || ""),
       revenue: String(data.get("revenue") || "") || undefined,
@@ -132,6 +134,23 @@ export function FoundingListForm() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
+                    <label htmlFor="lastName" className={labelClasses}>
+                      Last name
+                    </label>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      required
+                      autoComplete="family-name"
+                      className={inputClasses}
+                      placeholder="Rivera"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="flex flex-col gap-2">
                     <label htmlFor="email" className={labelClasses}>
                       Email
                     </label>
@@ -143,6 +162,20 @@ export function FoundingListForm() {
                       autoComplete="email"
                       className={inputClasses}
                       placeholder="you@company.com"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="phone" className={labelClasses}>
+                      Phone
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      autoComplete="tel"
+                      className={inputClasses}
+                      placeholder="(555) 123-4567"
                     />
                   </div>
                 </div>
