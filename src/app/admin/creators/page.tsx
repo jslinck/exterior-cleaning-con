@@ -24,7 +24,7 @@ export default async function AdminCreatorsPage() {
         <Table>
           <Thead>
             <Tr>
-              <Th>Name</Th>
+              <Th className="sticky left-0 z-10 bg-charcoal">Name</Th>
               <Th>Email</Th>
               <Th>Referral Code</Th>
               <Th>Status</Th>
@@ -35,7 +35,7 @@ export default async function AdminCreatorsPage() {
           <Tbody>
             {creators.map((creator) => (
               <Tr key={creator.id}>
-                <Td className="font-medium">
+                <Td className="sticky left-0 z-10 bg-ink font-medium">
                   <Link
                     href={`/admin/creators/${creator.id}`}
                     className="text-bone hover:text-ember hover:underline"

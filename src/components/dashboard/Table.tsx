@@ -24,8 +24,8 @@ export function Tr({ children }: { children: ReactNode }) {
   return <tr className="hover:bg-bone/[0.02]">{children}</tr>;
 }
 
-export function Th({ children }: { children?: ReactNode }) {
-  return <th className="px-4 py-3 font-semibold">{children}</th>;
+export function Th({ children, className = "" }: { children?: ReactNode; className?: string }) {
+  return <th className={`px-4 py-3 font-semibold ${className}`}>{children}</th>;
 }
 
 export function Td({
