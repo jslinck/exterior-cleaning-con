@@ -10,10 +10,10 @@
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "test:seed": "tsx --env-file=.env scripts/test-seed.ts",
-    "webhook:send": "tsx --env-file=.env scripts/send-webhook.ts",
-    "webhook:bulk": "tsx --env-file=.env scripts/bulk-orders.ts",
-    "backfill:phone": "tsx --env-file=.env scripts/backfill-phone-normalized.ts"
+    "test:seed": "tsx --env-file-if-exists=.env scripts/test-seed.ts",
+    "webhook:send": "tsx --env-file-if-exists=.env scripts/send-webhook.ts",
+    "webhook:bulk": "tsx --env-file-if-exists=.env scripts/bulk-orders.ts",
+    "backfill:phone": "tsx --env-file-if-exists=.env scripts/backfill-phone-normalized.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
