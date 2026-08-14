@@ -87,22 +87,26 @@ export async function Tickets() {
             <div
               key={ticket.id}
               className={`relative flex flex-col gap-8 rounded-2xl border p-8 md:p-10 ${
-                ticket.highlight === "recommended"
-                  ? "border-ember bg-gradient-to-b from-charcoal-light to-ink shadow-[0_0_60px_-15px_rgba(255,106,12,0.5)]"
-                  : ticket.highlight === "elite"
-                    ? "border-bone/30 bg-gradient-to-b from-charcoal to-ink shadow-[0_0_60px_-15px_rgba(247,244,237,0.15)]"
-                    : "border-bone/10 bg-ink"
+                !ticketsOnSale
+                  ? "border-bone/10 bg-ink/60 opacity-70"
+                  : ticket.highlight === "recommended"
+                    ? "border-ember bg-gradient-to-b from-charcoal-light to-ink shadow-[0_0_60px_-15px_rgba(255,106,12,0.5)]"
+                    : ticket.highlight === "elite"
+                      ? "border-bone/30 bg-gradient-to-b from-charcoal to-ink shadow-[0_0_60px_-15px_rgba(247,244,237,0.15)]"
+                      : "border-bone/10 bg-ink"
               }`}
             >
-              {ticket.badge && (
+              {(!ticketsOnSale || ticket.badge) && (
                 <span
                   className={`absolute -top-3 left-8 rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] ${
-                    ticket.highlight === "recommended"
-                      ? "bg-ember text-ink"
-                      : "bg-bone text-ink"
+                    !ticketsOnSale
+                      ? "bg-bone/20 text-bone"
+                      : ticket.highlight === "recommended"
+                        ? "bg-ember text-ink"
+                        : "bg-bone text-ink"
                   }`}
                 >
-                  {ticket.badge}
+                  {!ticketsOnSale ? "Coming Soon" : ticket.badge}
                 </span>
               )}
 
@@ -110,7 +114,11 @@ export async function Tickets() {
                 <h3 className="font-display text-3xl text-bone sm:text-4xl">
                   {ticket.name.toUpperCase()}
                 </h3>
-                <span className="font-display text-4xl text-ember sm:text-5xl">
+                <span
+                  className={`font-display text-4xl sm:text-5xl ${
+                    !ticketsOnSale ? "text-bone/50" : "text-ember"
+                  }`}
+                >
                   {ticket.priceLabel}
                 </span>
               </div>
@@ -142,12 +150,7 @@ export async function Tickets() {
                   {ticket.ctaLabel}
                 </CheckoutPopupButton>
               ) : (
-                <Button
-                  href="#founding-list"
-                  variant={ticket.highlight ? "primary" : "secondary"}
-                  size="lg"
-                  className="w-full"
-                >
+                <Button href="#founding-list" variant="secondary" size="lg" className="w-full">
                   Join the Founding List
                 </Button>
               )}
