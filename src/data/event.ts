@@ -47,7 +47,6 @@ export const stats = [
   { value: "3", label: "Days", suffix: "" },
   { value: "400", label: "Entrepreneurs", suffix: "+" },
   { value: "5", label: "Creator & Operator Speakers", suffix: "+" },
-  { value: "1", label: "Live Concert", suffix: "" },
   { value: "12", label: "Tactical Workshops", suffix: "+" },
 ] as const;
 
@@ -114,10 +113,6 @@ export const experiences = [
   {
     title: "Networking",
     description: "Structured and unstructured time built into every day to actually meet the room, not just sit in it.",
-  },
-  {
-    title: "Saturday Night Concert",
-    description: "The summit ends with a live concert. Business by day, festival energy by night.",
   },
   {
     title: "Live Business Teardowns",
@@ -254,18 +249,11 @@ export const elite = {
   perks: [
     "Private dinner with featured speakers, creators & industry leaders",
     "Exclusive speaker & creator meet & greet",
-    "Backstage access to Saturday night's concert",
     "Artist meet & greet",
     "Elite-only networking",
     "Exclusive Elite gift package",
     "Concierge-style experience throughout the weekend",
   ],
-};
-
-export const saturdayNight = {
-  eyebrow: "Saturday Night",
-  headline: "The summit ends with a live concert.",
-  body: "Three days of building your business. One night the summit turns into a full entertainment experience — live concert, DJ, creator appearances, and networking, with the same high-energy nightlife atmosphere as a festival. Details on the lineup are coming — for now, save the date and clear your Saturday night.",
 };
 
 export const sponsors = {

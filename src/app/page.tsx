@@ -9,7 +9,6 @@ import { Schedule } from "@/components/sections/Schedule";
 import { Roadmap } from "@/components/sections/Roadmap";
 import { Lineup } from "@/components/sections/Lineup";
 import { Tickets } from "@/components/sections/Tickets";
-import { SaturdayNight } from "@/components/sections/SaturdayNight";
 import { Sponsors } from "@/components/sections/Sponsors";
 import { FoundingListForm } from "@/components/sections/FoundingListForm";
 
@@ -27,7 +26,6 @@ export default function Home() {
         <Roadmap />
         <Lineup />
         <Tickets />
-        <SaturdayNight />
         <Sponsors />
         <FoundingListForm />
       </main>

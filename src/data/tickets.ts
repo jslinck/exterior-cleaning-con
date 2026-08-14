@@ -29,7 +29,6 @@ export const tickets: Ticket[] = [
       "Workshops",
       "Expo / sponsor area",
       "Networking",
-      "Saturday night concert",
     ],
   },
   {
@@ -65,7 +64,6 @@ export const tickets: Ticket[] = [
       "Everything in VIP",
       "Private dinner with featured speakers, creators & industry leaders",
       "Exclusive speaker & creator meet & greet",
-      "Backstage access to Saturday night's concert",
       "Artist meet & greet",
       "Elite-only networking",
       "Exclusive Elite gift package",
