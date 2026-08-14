@@ -16,15 +16,19 @@ enum UserRole {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  email        String    @unique
-  passwordHash String
-  role         UserRole
-  creator      Creator?  @relation(fields: [creatorId], references: [id])
-  creatorId    String?   @unique
-  lastLoginAt  DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id                  String    @id @default(uuid())
+  email               String    @unique
+  passwordHash        String
+  role                UserRole
+  creator             Creator?  @relation(fields: [creatorId], references: [id])
+  creatorId           String?   @unique
+  lastLoginAt         DateTime?
+  // Only the hash is stored — same rationale as password hashing. The raw
+  // token goes out in the email and is never persisted anywhere.
+  resetTokenHash      String?   @unique
+  resetTokenExpiresAt DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
 
 enum CreatorStatus {

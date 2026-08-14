@@ -6,6 +6,8 @@ import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth/dal";
 import { hashPassword } from "@/lib/auth/password";
+import { createResetToken } from "@/lib/auth/resetToken";
+import { sendEmail, passwordLinkEmailHtml } from "@/lib/email/resend";
 import { recomputeCreatorStats } from "@/lib/commission/recompute";
 import { validateTierLadder } from "@/lib/commission/tiers";
 
@@ -121,6 +123,35 @@ export async function resetCreatorPasswordAction(creatorId: string, formData: Fo
   }
   const passwordHash = await hashPassword(password);
   await db.user.update({ where: { creatorId }, data: { passwordHash } });
+  revalidatePath(`/admin/creators/${creatorId}`);
+}
+
+// Emails the creator a link to set their own password, instead of the
+// admin choosing one and sharing it out of band. Reuses the same
+// token/reset mechanism as the self-service "forgot password" flow.
+export async function sendPasswordSetupEmailAction(creatorId: string) {
+  await requireAdmin();
+
+  const user = await db.user.findUniqueOrThrow({ where: { creatorId } });
+  const token = await createResetToken(user.id);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://exteriorcon.com";
+  const setupUrl = `${siteUrl}/reset-password?token=${token}`;
+
+  const result = await sendEmail({
+    to: user.email,
+    subject: "Set up your EXTERIOR CON dashboard password",
+    html: passwordLinkEmailHtml({
+      heading: "Set up your dashboard password",
+      body: "An admin created your EXTERIOR CON creator account. Click below to set your own password and log in.",
+      url: setupUrl,
+      ctaLabel: "Set Your Password",
+    }),
+  });
+
+  if (!result.ok) {
+    throw new Error(result.error || "Failed to send email.");
+  }
+
   revalidatePath(`/admin/creators/${creatorId}`);
 }
 

@@ -7,6 +7,7 @@ import { StatTile } from "@/components/dashboard/StatTile";
 import {
   updateCreatorAction,
   resetCreatorPasswordAction,
+  sendPasswordSetupEmailAction,
 } from "@/lib/admin/actions";
 
 const inputClasses =
@@ -28,6 +29,7 @@ export default async function AdminCreatorDetailPage({
 
   const updateAction = updateCreatorAction.bind(null, id);
   const resetPasswordAction = resetCreatorPasswordAction.bind(null, id);
+  const sendSetupEmailAction = sendPasswordSetupEmailAction.bind(null, id);
 
   return (
     <Container className="py-12">
@@ -144,7 +146,22 @@ export default async function AdminCreatorDetailPage({
         <div className="flex flex-col gap-6">
           <div className="rounded-2xl border border-bone/10 bg-charcoal/40 p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-bone/50">
-              Reset Password
+              Password Setup / Reset Email
+            </p>
+            <p className="mt-2 text-xs text-bone/40">
+              Emails the creator a link to set their own password, instead of you choosing one and
+              sharing it directly.
+            </p>
+            <form action={sendSetupEmailAction} className="mt-4">
+              <Button type="submit" size="md" variant="secondary" className="w-full">
+                Send Setup Email
+              </Button>
+            </form>
+          </div>
+
+          <div className="rounded-2xl border border-bone/10 bg-charcoal/40 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-bone/50">
+              Reset Password Manually
             </p>
             <form action={resetPasswordAction} className="mt-4 flex flex-col gap-4">
               <input
