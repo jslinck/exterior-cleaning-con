@@ -91,6 +91,18 @@ export default async function AdminCreatorsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
+              <label htmlFor="phone" className={labelClasses}>
+                Phone <span className="normal-case tracking-normal text-bone/30">(optional)</span>
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                className={inputClasses}
+                placeholder="(555) 123-4567"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
               <label htmlFor="instagram" className={labelClasses}>
                 Instagram <span className="normal-case tracking-normal text-bone/30">(optional)</span>
               </label>

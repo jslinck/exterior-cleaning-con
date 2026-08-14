@@ -20,6 +20,7 @@ export async function createCreatorAction(formData: FormData) {
 
   const name = String(formData.get("name") || "").trim();
   const email = String(formData.get("email") || "").trim().toLowerCase();
+  const phone = String(formData.get("phone") || "").trim() || null;
   const instagram = String(formData.get("instagram") || "").trim() || null;
   const referralCode = String(formData.get("referralCode") || "").trim().toUpperCase();
   const password = String(formData.get("password") || "");
@@ -32,7 +33,7 @@ export async function createCreatorAction(formData: FormData) {
   }
 
   const creator = await db.creator.create({
-    data: { name, email, instagram, referralCode },
+    data: { name, email, phone, instagram, referralCode },
   });
 
   const passwordHash = await hashPassword(password);
@@ -61,6 +62,7 @@ export async function updateCreatorAction(creatorId: string, formData: FormData)
 
   const name = String(formData.get("name") || "").trim();
   const email = String(formData.get("email") || "").trim().toLowerCase();
+  const phone = String(formData.get("phone") || "").trim() || null;
   const instagram = String(formData.get("instagram") || "").trim() || null;
   const status = String(formData.get("status") || "ACTIVE") as "ACTIVE" | "DISABLED";
   const participationConfirmed = formData.get("participationConfirmed") === "on";
@@ -77,7 +79,7 @@ export async function updateCreatorAction(creatorId: string, formData: FormData)
     await db.$transaction([
       db.creator.update({
         where: { id: creatorId },
-        data: { name, email, instagram, status, participationConfirmed },
+        data: { name, email, phone, instagram, status, participationConfirmed },
       }),
       db.user.update({ where: { creatorId }, data: { email } }),
     ]);
@@ -96,11 +98,12 @@ export async function updateCreatorAction(creatorId: string, formData: FormData)
       previousValue: {
         name: before.name,
         email: before.email,
+        phone: before.phone,
         instagram: before.instagram,
         status: before.status,
         participationConfirmed: before.participationConfirmed,
       },
-      newValue: { name, email, instagram, status, participationConfirmed },
+      newValue: { name, email, phone, instagram, status, participationConfirmed },
     },
   });
 

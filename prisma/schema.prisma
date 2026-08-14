@@ -36,6 +36,7 @@ model Creator {
   id                     String        @id @default(uuid())
   name                   String
   email                  String        @unique
+  phone                  String?
   instagram              String?
   referralCode           String        @unique
   status                 CreatorStatus @default(ACTIVE)
