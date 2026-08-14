@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { CheckoutPopupButton } from "@/components/ui/CheckoutPopupButton";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { elite, vip, ticketsOnSale } from "@/data/event";
@@ -131,14 +132,25 @@ export async function Tickets() {
                 ))}
               </ul>
 
-              <Button
-                href={checkoutUrl ?? "#founding-list"}
-                variant={ticket.highlight ? "primary" : "secondary"}
-                size="lg"
-                className="w-full"
-              >
-                {checkoutUrl ? ticket.ctaLabel : "Join the Founding List"}
-              </Button>
+              {checkoutUrl ? (
+                <CheckoutPopupButton
+                  href={checkoutUrl}
+                  variant={ticket.highlight ? "primary" : "secondary"}
+                  size="lg"
+                  className="w-full"
+                >
+                  {ticket.ctaLabel}
+                </CheckoutPopupButton>
+              ) : (
+                <Button
+                  href="#founding-list"
+                  variant={ticket.highlight ? "primary" : "secondary"}
+                  size="lg"
+                  className="w-full"
+                >
+                  Join the Founding List
+                </Button>
+              )}
             </div>
           ))}
         </div>

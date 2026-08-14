@@ -24,6 +24,16 @@ const sizes: Record<NonNullable<CommonProps["size"]>, string> = {
   lg: "px-8 py-4 text-base",
 };
 
+// Shared with CheckoutPopupButton so both stay visually identical without
+// duplicating the style rules.
+export function buttonClasses(
+  variant: NonNullable<CommonProps["variant"]> = "primary",
+  size: NonNullable<CommonProps["size"]> = "md",
+  className = "",
+) {
+  return `${base} ${variants[variant]} ${sizes[size]} ${className}`;
+}
+
 export function Button({
   children,
   href,
@@ -39,7 +49,7 @@ export function Button({
   type?: "button" | "submit";
   disabled?: boolean;
 }) {
-  const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
+  const classes = buttonClasses(variant, size, className);
 
   if (href) {
     return (
