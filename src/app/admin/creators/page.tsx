@@ -30,13 +30,19 @@ export default async function AdminCreatorsPage() {
               <Th>Status</Th>
               <Th>Registrations</Th>
               <Th>Revenue</Th>
-              <Th />
             </Tr>
           </Thead>
           <Tbody>
             {creators.map((creator) => (
               <Tr key={creator.id}>
-                <Td className="font-medium text-bone">{creator.name}</Td>
+                <Td className="font-medium">
+                  <Link
+                    href={`/admin/creators/${creator.id}`}
+                    className="text-bone hover:text-ember hover:underline"
+                  >
+                    {creator.name}
+                  </Link>
+                </Td>
                 <Td className="text-bone/70">{creator.email}</Td>
                 <Td>{creator.referralCode}</Td>
                 <Td>
@@ -48,16 +54,11 @@ export default async function AdminCreatorsPage() {
                 <Td>
                   ${Number(creator.commissionRecord?.attributableRevenue ?? 0).toLocaleString()}
                 </Td>
-                <Td>
-                  <Link href={`/admin/creators/${creator.id}`} className="text-ember hover:underline">
-                    Manage
-                  </Link>
-                </Td>
               </Tr>
             ))}
             {creators.length === 0 && (
               <Tr>
-                <Td className="text-bone/40" colSpan={7}>
+                <Td className="text-bone/40" colSpan={6}>
                   No creators yet.
                 </Td>
               </Tr>
