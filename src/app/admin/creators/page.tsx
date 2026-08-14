@@ -25,6 +25,7 @@ export default async function AdminCreatorsPage() {
           <Thead>
             <Tr>
               <Th>Name</Th>
+              <Th>Email</Th>
               <Th>Referral Code</Th>
               <Th>Status</Th>
               <Th>Registrations</Th>
@@ -36,6 +37,7 @@ export default async function AdminCreatorsPage() {
             {creators.map((creator) => (
               <Tr key={creator.id}>
                 <Td className="font-medium text-bone">{creator.name}</Td>
+                <Td className="text-bone/70">{creator.email}</Td>
                 <Td>{creator.referralCode}</Td>
                 <Td>
                   <Badge tone={creator.status === "ACTIVE" ? "success" : "danger"}>
@@ -55,7 +57,7 @@ export default async function AdminCreatorsPage() {
             ))}
             {creators.length === 0 && (
               <Tr>
-                <Td className="text-bone/40" colSpan={6}>
+                <Td className="text-bone/40" colSpan={7}>
                   No creators yet.
                 </Td>
               </Tr>

@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 
 type CommonProps = {
   children: ReactNode;
@@ -34,6 +36,21 @@ export function buttonClasses(
   return `${base} ${variants[variant]} ${sizes[size]} ${className}`;
 }
 
+// A same-page anchor link (e.g. "#founding-list") only auto-scrolls the
+// first time it's clicked — once the URL's hash already matches, neither
+// the browser nor Next's Link treats a repeat click as a navigation, so
+// nothing happens on the second click. Scrolling manually here makes it
+// work every time, regardless of the current hash.
+function scrollToHash(event: MouseEvent<HTMLAnchorElement>, hash: string) {
+  const target = document.querySelector(hash);
+  if (!target) return;
+  event.preventDefault();
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (window.location.hash !== hash) {
+    history.pushState(null, "", hash);
+  }
+}
+
 export function Button({
   children,
   href,
@@ -50,6 +67,14 @@ export function Button({
   disabled?: boolean;
 }) {
   const classes = buttonClasses(variant, size, className);
+
+  if (href?.startsWith("#")) {
+    return (
+      <a href={href} onClick={(event) => scrollToHash(event, href)} className={classes}>
+        {children}
+      </a>
+    );
+  }
 
   if (href) {
     return (

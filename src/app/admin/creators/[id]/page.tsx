@@ -35,6 +35,7 @@ export default async function AdminCreatorDetailPage({
         {creator.referralCode} · {referralLink}
       </p>
       <h1 className="mt-2 font-display text-4xl text-bone sm:text-5xl">{creator.name}</h1>
+      <p className="mt-1 text-sm text-bone/60">{creator.email}</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Registrations" value={String(data.registrationCount)} />
@@ -67,6 +68,23 @@ export default async function AdminCreatorDetailPage({
                 required
                 className={inputClasses}
               />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className={labelClasses}>
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                defaultValue={creator.email}
+                required
+                className={inputClasses}
+              />
+              <p className="text-xs text-bone/40">
+                Also updates their login email — they&apos;ll need to use the new address next
+                time they sign in.
+              </p>
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="instagram" className={labelClasses}>

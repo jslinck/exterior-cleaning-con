@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth/dal";
 import { hashPassword } from "@/lib/auth/password";
@@ -52,19 +53,40 @@ export async function createCreatorAction(formData: FormData) {
   redirect("/admin/creators");
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function updateCreatorAction(creatorId: string, formData: FormData) {
   const admin = await requireAdmin();
   const before = await db.creator.findUniqueOrThrow({ where: { id: creatorId } });
 
   const name = String(formData.get("name") || "").trim();
+  const email = String(formData.get("email") || "").trim().toLowerCase();
   const instagram = String(formData.get("instagram") || "").trim() || null;
   const status = String(formData.get("status") || "ACTIVE") as "ACTIVE" | "DISABLED";
   const participationConfirmed = formData.get("participationConfirmed") === "on";
 
-  await db.creator.update({
-    where: { id: creatorId },
-    data: { name, instagram, status, participationConfirmed },
-  });
+  if (!EMAIL_RE.test(email)) {
+    throw new Error("Enter a valid email address.");
+  }
+
+  // Creator.email and the linked User.email (their login) are separate
+  // fields that start out equal but aren't kept in sync automatically —
+  // update both together here, or the creator's login would silently
+  // keep working with the old address after an admin "changes" it.
+  try {
+    await db.$transaction([
+      db.creator.update({
+        where: { id: creatorId },
+        data: { name, email, instagram, status, participationConfirmed },
+      }),
+      db.user.update({ where: { creatorId }, data: { email } }),
+    ]);
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      throw new Error("That email is already in use by another creator or admin.");
+    }
+    throw err;
+  }
 
   await db.auditLog.create({
     data: {
@@ -73,11 +95,12 @@ export async function updateCreatorAction(creatorId: string, formData: FormData)
       creatorId,
       previousValue: {
         name: before.name,
+        email: before.email,
         instagram: before.instagram,
         status: before.status,
         participationConfirmed: before.participationConfirmed,
       },
-      newValue: { name, instagram, status, participationConfirmed },
+      newValue: { name, email, instagram, status, participationConfirmed },
     },
   });
 
