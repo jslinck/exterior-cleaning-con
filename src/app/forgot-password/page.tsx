@@ -11,7 +11,7 @@ const inputClasses =
 const labelClasses = "text-xs font-semibold uppercase tracking-[0.2em] text-bone/60";
 
 export default function ForgotPasswordPage() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "sent" | "error">("idle");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -19,13 +19,21 @@ export default function ForgotPasswordPage() {
 
     const data = new FormData(event.currentTarget);
 
-    await fetch("/api/auth/forgot-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: String(data.get("email") || "") }),
-    }).catch(() => {});
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: String(data.get("email") || "") }),
+      });
 
-    setStatus("sent");
+      // A non-ok response here means something actually broke server-side
+      // (not "email doesn't exist" — that's still a 200 by design, so
+      // this can't be used to enumerate accounts either way).
+      if (!res.ok) throw new Error();
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
@@ -64,6 +72,12 @@ export default function ForgotPasswordPage() {
                 placeholder="you@exteriorcon.com"
               />
             </div>
+
+            {status === "error" && (
+              <p role="alert" className="text-sm text-ember-light">
+                Something went wrong on our end. Please try again in a moment.
+              </p>
+            )}
 
             <Button type="submit" size="lg" className="w-full" disabled={status === "submitting"}>
               {status === "submitting" ? "Sending…" : "Send Reset Link"}
