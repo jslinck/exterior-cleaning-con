@@ -23,16 +23,22 @@ export default async function CreatorDashboardPage() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://exteriorcon.com";
   const referralLink = `${siteUrl}/?ref=${data.creator.referralCode}`;
 
+  // GA/VIP reflect the actual unlocked reward tier — which can come from
+  // real ticket sales OR an admin's manual grant — not raw ticket count.
+  // Otherwise a manually-granted reward never shows as earned here even
+  // though it genuinely is. Commission-tier milestones are unaffected —
+  // those are never manually granted, so ticket count is still correct.
+  const rewardRank = data.rewardTier === "VIP" ? 2 : data.rewardTier === "GA" ? 1 : 0;
+
   const milestones = [
-    { threshold: 5, label: "5 tickets — GA reward unlocked" },
-    { threshold: 15, label: "15 tickets — VIP reward unlocked" },
+    { threshold: 5, label: "5 tickets — GA reward unlocked", achieved: rewardRank >= 1 },
+    { threshold: 15, label: "15 tickets — VIP reward unlocked", achieved: rewardRank >= 2 },
     ...data.commissionTierMilestones.map((t) => ({
       threshold: t.minTickets,
       label: `${t.minTickets}+ tickets — ${t.percentage}% commission tier`,
+      achieved: data.ticketsSold >= t.minTickets,
     })),
-  ]
-    .sort((a, b) => a.threshold - b.threshold)
-    .map((m) => ({ label: m.label, achieved: data.ticketsSold >= m.threshold }));
+  ].sort((a, b) => a.threshold - b.threshold);
 
   return (
     <>
