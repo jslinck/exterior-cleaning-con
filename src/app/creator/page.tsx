@@ -1,8 +1,9 @@
 import { requireCreator } from "@/lib/auth/dal";
-import { getCreatorDashboardData } from "@/lib/creator/stats";
+import { getCreatorDashboardData, getCreatorLeaderboard } from "@/lib/creator/stats";
 import { Container } from "@/components/ui/Container";
 import { StatTile } from "@/components/dashboard/StatTile";
 import { MilestoneProgress } from "@/components/dashboard/MilestoneProgress";
+import { Leaderboard } from "@/components/dashboard/Leaderboard";
 import { CopyReferralLink } from "@/components/dashboard/CopyReferralLink";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { Badge } from "@/components/dashboard/Badge";
@@ -14,16 +15,24 @@ function formatCurrency(value: number) {
 export default async function CreatorDashboardPage() {
   const user = await requireCreator();
   const creatorId = user.creator!.id;
-  const data = await getCreatorDashboardData(creatorId);
+  const [data, leaderboard] = await Promise.all([
+    getCreatorDashboardData(creatorId),
+    getCreatorLeaderboard(),
+  ]);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://exteriorcon.com";
   const referralLink = `${siteUrl}/?ref=${data.creator.referralCode}`;
 
   const milestones = [
-    { label: "5 tickets — GA reward unlocked", achieved: data.ticketsSold >= 5 },
-    { label: "15 tickets — VIP reward unlocked", achieved: data.ticketsSold >= 15 },
-    { label: "21 tickets — 25% commission tier", achieved: data.ticketsSold >= 21 },
-  ];
+    { threshold: 5, label: "5 tickets — GA reward unlocked" },
+    { threshold: 15, label: "15 tickets — VIP reward unlocked" },
+    ...data.commissionTierMilestones.map((t) => ({
+      threshold: t.minTickets,
+      label: `${t.minTickets}+ tickets — ${t.percentage}% commission tier`,
+    })),
+  ]
+    .sort((a, b) => a.threshold - b.threshold)
+    .map((m) => ({ label: m.label, achieved: data.ticketsSold >= m.threshold }));
 
   return (
     <>
@@ -81,8 +90,9 @@ export default async function CreatorDashboardPage() {
           />
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <MilestoneProgress items={milestones} />
+          <Leaderboard title="Ticket Leaderboard" entries={leaderboard} />
         </div>
       </Container>
     </>

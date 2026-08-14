@@ -245,6 +245,39 @@ export async function updateRewardStatusAction(creatorId: string, formData: Form
   revalidatePath("/admin/rewards");
 }
 
+// Lets an admin unlock a reward tier for a creator independent of their
+// real ticket count — e.g. giving a creator a GA ticket from day one as a
+// signing incentive. Sets CreatorReward.unlockedTier directly; recompute()
+// only ever auto-*upgrades* that field based on real tickets, so a manual
+// grant is never silently overwritten by a later webhook, and picks up a
+// real upgrade later the same way an earned one would.
+export async function grantRewardTierAction(creatorId: string, formData: FormData) {
+  const admin = await requireAdmin();
+  const tier = String(formData.get("tier") || "") as "NONE" | "GA" | "VIP";
+
+  const existing = await db.creatorReward.findUnique({ where: { creatorId } });
+
+  await db.creatorReward.upsert({
+    where: { creatorId },
+    update: { unlockedTier: tier },
+    create: { creatorId, unlockedTier: tier },
+  });
+
+  await db.auditLog.create({
+    data: {
+      type: "REWARD_TIER_MANUALLY_GRANTED",
+      actorUserId: admin.id,
+      creatorId,
+      previousValue: { unlockedTier: existing?.unlockedTier ?? "NONE" },
+      newValue: { unlockedTier: tier },
+      reason: "Manually granted by admin, independent of real ticket count.",
+    },
+  });
+
+  revalidatePath("/admin/rewards");
+  revalidatePath(`/admin/creators/${creatorId}`);
+}
+
 // ---------- Manual attribution overrides (always logged) ----------
 
 export async function overrideLeadAttributionAction(leadId: string, formData: FormData) {
