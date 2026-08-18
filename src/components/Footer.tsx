@@ -15,9 +15,17 @@ export function Footer() {
             {event.location} · {event.dateRange}
           </p>
         </div>
-        <p className="text-xs text-bone/30">
-          © {new Date().getFullYear()} {event.shortName}. All rights reserved.
-        </p>
+        <div className="flex flex-col items-center gap-2 sm:items-end">
+          <a
+            href="/affiliates"
+            className="text-xs font-semibold uppercase tracking-[0.2em] text-bone/50 hover:text-ember"
+          >
+            Creator Program
+          </a>
+          <p className="text-xs text-bone/30">
+            © {new Date().getFullYear()} {event.shortName}. All rights reserved.
+          </p>
+        </div>
       </Container>
     </footer>
   );
