@@ -20,7 +20,7 @@ export default async function AdminCreatorsPage() {
     <Container className="py-12">
       <h1 className="font-display text-4xl text-bone sm:text-5xl">Creators</h1>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
         <Table>
           <Thead>
             <Tr>
@@ -47,9 +47,14 @@ export default async function AdminCreatorsPage() {
                 <Td className="text-bone/70">{creator.email}</Td>
                 <Td>{creator.referralCode}</Td>
                 <Td>
-                  <Badge tone={creator.status === "ACTIVE" ? "success" : "danger"}>
-                    {creator.status}
-                  </Badge>
+                  <div className="flex flex-wrap gap-1.5">
+                    <Badge tone={creator.status === "ACTIVE" ? "success" : "danger"}>
+                      {creator.status}
+                    </Badge>
+                    <Badge tone={creator.user?.lastLoginAt ? "ember" : "neutral"}>
+                      {creator.user?.lastLoginAt ? "Logged In" : "Not Logged In"}
+                    </Badge>
+                  </div>
                 </Td>
                 <Td>{creator.leads.length}</Td>
                 <Td>
