@@ -44,14 +44,20 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <span className="hidden md:inline-flex">
+        <span className="hidden items-center gap-3 md:inline-flex">
+          <Button href="/affiliates" size="md" variant="secondary">
+            Creators
+          </Button>
           <Button href="#founding-list" size="md">
             {ctas.primary}
           </Button>
         </span>
-        <span className="md:hidden">
+        <span className="flex items-center gap-2 md:hidden">
+          <Button href="/affiliates" size="md" variant="secondary">
+            Creators
+          </Button>
           <Button href="#founding-list" size="md" variant="secondary">
-            Join List
+            Join
           </Button>
         </span>
       </Container>
