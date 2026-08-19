@@ -23,11 +23,12 @@ export async function Tickets() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-3 font-display text-2xl text-bone/50 sm:text-3xl">
-          <span className="text-bone">$497</span>
-          <span className="text-ember">→</span>
-          <span className="text-bone">$997</span>
-          <span className="text-ember">→</span>
-          <span className="text-bone">$2,997</span>
+          {tickets.map((ticket, index) => (
+            <span key={ticket.id} className="flex items-center gap-3">
+              {index > 0 && <span className="text-ember">→</span>}
+              <span className="text-bone">{ticket.foundingPriceLabel ?? ticket.priceLabel}</span>
+            </span>
+          ))}
         </div>
 
         {!ticketsOnSale && (
@@ -110,18 +111,31 @@ export async function Tickets() {
                 </span>
               )}
 
-              <div className="flex items-baseline justify-between">
+              <div className="flex items-start justify-between gap-4">
                 <h3 className="font-display text-3xl text-bone sm:text-4xl">
                   {ticket.name.toUpperCase()}
                 </h3>
-                <span
-                  className={`font-display text-4xl sm:text-5xl ${
-                    !ticketsOnSale ? "text-bone/50" : "text-ember"
-                  }`}
-                >
-                  {ticket.priceLabel}
-                </span>
+                <div className="flex flex-col items-end">
+                  {ticket.foundingPrice ? (
+                    <span className="text-sm text-bone/40 line-through">
+                      {ticket.priceLabel}
+                    </span>
+                  ) : null}
+                  <span
+                    className={`font-display text-4xl sm:text-5xl ${
+                      !ticketsOnSale ? "text-bone/50" : "text-ember"
+                    }`}
+                  >
+                    {ticket.foundingPriceLabel ?? ticket.priceLabel}
+                  </span>
+                </div>
               </div>
+
+              {ticket.foundingPrice && (
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ember">
+                  Founding price — first {ticket.foundingCap} tickets only
+                </p>
+              )}
 
               <p className="text-sm text-bone/60">{ticket.tagline}</p>
 

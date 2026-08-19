@@ -7,17 +7,22 @@ const db = new PrismaClient();
 async function main() {
   console.log("Seeding ticket types...");
   for (const ticket of tickets) {
+    // Seed the currently-effective price (the founding markdown, while
+    // it applies) — this is a reference default for the admin dashboard,
+    // not the source of truth for commission math, which is always based
+    // on the actual per-ticket price from the Ticket Tailor webhook.
+    const effectivePrice = ticket.foundingPrice ?? ticket.price;
     await db.ticketTypeConfig.upsert({
       where: { key: ticket.id },
       update: {
         name: ticket.name,
-        price: ticket.price,
+        price: effectivePrice,
         capacity: ticket.capacity ? Number(ticket.capacity) : null,
       },
       create: {
         key: ticket.id,
         name: ticket.name,
-        price: ticket.price,
+        price: effectivePrice,
         capacity: ticket.capacity ? Number(ticket.capacity) : null,
       },
     });

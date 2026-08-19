@@ -7,6 +7,11 @@ export type Ticket = {
   name: string;
   price: number;
   priceLabel: string;
+  // When set, the ticket is marked down from `price` to `foundingPrice`
+  // for the first `foundingCap` tickets sold, then reverts to `price`.
+  foundingPrice?: number;
+  foundingPriceLabel?: string;
+  foundingCap?: number;
   tagline: string;
   ctaLabel: string;
   badge?: string;
@@ -19,8 +24,11 @@ export const tickets: Ticket[] = [
   {
     id: "ga",
     name: "General",
-    price: 497,
-    priceLabel: "$497",
+    price: 697,
+    priceLabel: "$697",
+    foundingPrice: 497,
+    foundingPriceLabel: "$497",
+    foundingCap: 100,
     tagline: "The core 3-day conference experience.",
     ctaLabel: "Get General Admission",
     includes: [
@@ -34,8 +42,11 @@ export const tickets: Ticket[] = [
   {
     id: "vip",
     name: "VIP",
-    price: 997,
-    priceLabel: "$997",
+    price: 1197,
+    priceLabel: "$1,197",
+    foundingPrice: 997,
+    foundingPriceLabel: "$997",
+    foundingCap: 100,
     tagline: "Everything in General, plus front-row access.",
     ctaLabel: "Get VIP",
     badge: "Most Popular",
