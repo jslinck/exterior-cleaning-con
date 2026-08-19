@@ -2,7 +2,7 @@ import "server-only";
 import { randomBytes, createHash } from "crypto";
 import { db } from "@/lib/db";
 
-const TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+const TOKEN_TTL_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
 
 function hashToken(token: string) {
   return createHash("sha256").update(token).digest("hex");
