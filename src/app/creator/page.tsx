@@ -1,5 +1,6 @@
 import { requireCreator } from "@/lib/auth/dal";
 import { getCreatorDashboardData, getCreatorLeaderboard } from "@/lib/creator/stats";
+import { getFoundingListGoalProgress } from "@/lib/foundingListGoal";
 import { Container } from "@/components/ui/Container";
 import { StatTile } from "@/components/dashboard/StatTile";
 import { MilestoneProgress } from "@/components/dashboard/MilestoneProgress";
@@ -15,9 +16,10 @@ function formatCurrency(value: number) {
 export default async function CreatorDashboardPage() {
   const user = await requireCreator();
   const creatorId = user.creator!.id;
-  const [data, leaderboard] = await Promise.all([
+  const [data, leaderboard, goalProgress] = await Promise.all([
     getCreatorDashboardData(creatorId),
     getCreatorLeaderboard(),
+    getFoundingListGoalProgress(),
   ]);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://exteriorcon.com";
@@ -66,6 +68,34 @@ export default async function CreatorDashboardPage() {
           </div>
           <p className="mt-2 text-xs text-bone/40">
             Referral code: <span className="text-bone/70">{data.creator.referralCode}</span>
+          </p>
+        </div>
+
+        <div className="mb-8 rounded-2xl border border-bone/10 bg-charcoal/40 p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-bone/50">
+            Founding List Goal
+          </p>
+          <p className="mt-2 font-display text-2xl text-bone sm:text-3xl">
+            {goalProgress.registered.toLocaleString()} / {goalProgress.goal.toLocaleString()}{" "}
+            founding members
+          </p>
+          <div
+            className="mt-4 h-3 w-full overflow-hidden rounded-full bg-ink"
+            role="progressbar"
+            aria-valuenow={goalProgress.registered}
+            aria-valuemin={0}
+            aria-valuemax={goalProgress.goal}
+            aria-label={`${goalProgress.registered} of ${goalProgress.goal} founding list signups`}
+          >
+            <div
+              className="h-full rounded-full bg-ember transition-[width]"
+              style={{ width: `${goalProgress.percent}%` }}
+            />
+          </div>
+          <p className="mt-2 text-xs text-bone/40">
+            {goalProgress.goal - goalProgress.registered > 0
+              ? `${(goalProgress.goal - goalProgress.registered).toLocaleString()} spots to go — across every creator`
+              : "Goal reached — across every creator"}
           </p>
         </div>
 
