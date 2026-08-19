@@ -120,25 +120,12 @@ export default async function AdminCreatorsPage() {
                 placeholder="BAILEY"
               />
             </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="password" className={labelClasses}>
-                Login Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="text"
-                required
-                minLength={8}
-                className={inputClasses}
-                placeholder="At least 8 characters"
-              />
-              <p className="text-[11px] text-bone/40">
-                Share this with the creator directly — there&apos;s no email invite flow yet.
-              </p>
-            </div>
+            <p className="text-[11px] text-bone/40">
+              They&apos;ll get an email with a link to set their own password — nothing to share
+              manually.
+            </p>
             <Button type="submit" size="md" className="w-full">
-              Create Creator
+              Create Creator &amp; Send Setup Email
             </Button>
           </form>
         </div>

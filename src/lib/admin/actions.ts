@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { randomBytes } from "crypto";
 import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth/dal";
@@ -25,22 +26,21 @@ export async function createCreatorAction(formData: FormData) {
   const phone = String(formData.get("phone") || "").trim() || null;
   const instagram = String(formData.get("instagram") || "").trim() || null;
   const referralCode = String(formData.get("referralCode") || "").trim().toUpperCase();
-  const password = String(formData.get("password") || "");
 
-  if (!name || !email || !referralCode || !password) {
-    throw new Error("Name, email, referral code, and password are required.");
-  }
-  if (password.length < 8) {
-    throw new Error("Password must be at least 8 characters.");
+  if (!name || !email || !referralCode) {
+    throw new Error("Name, email, and referral code are required.");
   }
 
   const creator = await db.creator.create({
     data: { name, email, phone, instagram, referralCode },
   });
 
-  const passwordHash = await hashPassword(password);
-  await db.user.create({
-    data: { email, passwordHash, role: "CREATOR", creatorId: creator.id },
+  // No password is set here — the account starts locked behind a random
+  // hash nobody knows, and the creator sets their own password via the
+  // emailed link below. Standard creation flow, not a fallback.
+  const lockedPasswordHash = await hashPassword(randomBytes(32).toString("hex"));
+  const user = await db.user.create({
+    data: { email, passwordHash: lockedPasswordHash, role: "CREATOR", creatorId: creator.id },
   });
 
   await db.auditLog.create({
@@ -51,6 +51,8 @@ export async function createCreatorAction(formData: FormData) {
       newValue: { name, email, referralCode },
     },
   });
+
+  await sendCreatorSetupEmail(user.id, user.email);
 
   revalidatePath("/admin/creators");
   redirect("/admin/creators");
@@ -126,19 +128,17 @@ export async function resetCreatorPasswordAction(creatorId: string, formData: Fo
   revalidatePath(`/admin/creators/${creatorId}`);
 }
 
-// Emails the creator a link to set their own password, instead of the
-// admin choosing one and sharing it out of band. Reuses the same
-// token/reset mechanism as the self-service "forgot password" flow.
-export async function sendPasswordSetupEmailAction(creatorId: string) {
-  await requireAdmin();
-
-  const user = await db.user.findUniqueOrThrow({ where: { creatorId } });
-  const token = await createResetToken(user.id);
+// Emails a link to set a password, instead of the admin choosing one and
+// sharing it out of band. Shared by account creation (the standard path —
+// every new creator starts locked out and sets their own password) and
+// the manual "resend" action on the creator detail page.
+async function sendCreatorSetupEmail(userId: string, email: string) {
+  const token = await createResetToken(userId);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://exteriorcon.com";
   const setupUrl = `${siteUrl}/reset-password?token=${token}`;
 
   const result = await sendEmail({
-    to: user.email,
+    to: email,
     subject: "Set up your EXTERIOR CON dashboard password",
     html: passwordLinkEmailHtml({
       heading: "Set up your dashboard password",
@@ -149,9 +149,14 @@ export async function sendPasswordSetupEmailAction(creatorId: string) {
   });
 
   if (!result.ok) {
-    throw new Error(result.error || "Failed to send email.");
+    throw new Error(result.error || "Failed to send setup email.");
   }
+}
 
+export async function sendPasswordSetupEmailAction(creatorId: string) {
+  await requireAdmin();
+  const user = await db.user.findUniqueOrThrow({ where: { creatorId } });
+  await sendCreatorSetupEmail(user.id, user.email);
   revalidatePath(`/admin/creators/${creatorId}`);
 }
 
