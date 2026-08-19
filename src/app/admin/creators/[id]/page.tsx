@@ -20,7 +20,10 @@ export default async function AdminCreatorDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const creator = await db.creator.findUnique({ where: { id } });
+  const creator = await db.creator.findUnique({
+    where: { id },
+    include: { user: { select: { lastLoginAt: true } } },
+  });
   if (!creator) notFound();
 
   const data = await getCreatorDashboardData(id);
@@ -40,6 +43,18 @@ export default async function AdminCreatorDetailPage({
       <p className="mt-1 text-sm text-bone/60">
         {creator.email}
         {creator.phone && <> · {creator.phone}</>}
+      </p>
+      <p className="mt-1 text-xs text-bone/40">
+        Last login:{" "}
+        {creator.user?.lastLoginAt
+          ? creator.user.lastLoginAt.toLocaleString(undefined, {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+            })
+          : "Never"}
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

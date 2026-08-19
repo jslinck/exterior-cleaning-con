@@ -12,7 +12,7 @@ const labelClasses = "text-xs font-semibold uppercase tracking-[0.2em] text-bone
 
 export default async function AdminCreatorsPage() {
   const creators = await db.creator.findMany({
-    include: { leads: true, commissionRecord: true },
+    include: { leads: true, commissionRecord: true, user: { select: { lastLoginAt: true } } },
     orderBy: { createdAt: "desc" },
   });
 
@@ -30,6 +30,7 @@ export default async function AdminCreatorsPage() {
               <Th>Status</Th>
               <Th>Registrations</Th>
               <Th>Revenue</Th>
+              <Th>Last Login</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -54,11 +55,24 @@ export default async function AdminCreatorsPage() {
                 <Td>
                   ${Number(creator.commissionRecord?.attributableRevenue ?? 0).toLocaleString()}
                 </Td>
+                <Td>
+                  {creator.user?.lastLoginAt ? (
+                    <span className="text-bone/70">
+                      {creator.user.lastLoginAt.toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  ) : (
+                    <Badge tone="warning">Never</Badge>
+                  )}
+                </Td>
               </Tr>
             ))}
             {creators.length === 0 && (
               <Tr>
-                <Td className="text-bone/40" colSpan={6}>
+                <Td className="text-bone/40" colSpan={7}>
                   No creators yet.
                 </Td>
               </Tr>

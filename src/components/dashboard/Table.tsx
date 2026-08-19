@@ -25,7 +25,7 @@ export function Tr({ children }: { children: ReactNode }) {
 }
 
 export function Th({ children, className = "" }: { children?: ReactNode; className?: string }) {
-  return <th className={`px-4 py-3 font-semibold ${className}`}>{children}</th>;
+  return <th className={`px-3 py-3 font-semibold ${className}`}>{children}</th>;
 }
 
 export function Td({
@@ -38,7 +38,7 @@ export function Td({
   colSpan?: number;
 }) {
   return (
-    <td colSpan={colSpan} className={`px-4 py-3 text-bone/80 ${className}`}>
+    <td colSpan={colSpan} className={`px-3 py-3 text-bone/80 ${className}`}>
       {children}
     </td>
   );
