@@ -17,6 +17,10 @@ export const event = {
   subheadline:
     "The premium summit for exterior-cleaning entrepreneurs who are done playing small — three days of main-stage strategy, tactical workshops, and the industry's next generation of operators, in the desert.",
   targetAttendance: 400,
+  // Public founding-list signup goal, shown as a live progress bar on the
+  // homepage — separate from targetAttendance, which is the eventual
+  // in-person headcount target.
+  foundingListGoal: 500,
 };
 
 // Flip this to true once a real Ticket Tailor event is live and
