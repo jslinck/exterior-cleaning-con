@@ -68,11 +68,15 @@ export async function updateCreatorAction(creatorId: string, formData: FormData)
   const email = String(formData.get("email") || "").trim().toLowerCase();
   const phone = String(formData.get("phone") || "").trim() || null;
   const instagram = String(formData.get("instagram") || "").trim() || null;
+  const referralCode = String(formData.get("referralCode") || "").trim().toUpperCase();
   const status = String(formData.get("status") || "ACTIVE") as "ACTIVE" | "DISABLED";
   const participationConfirmed = formData.get("participationConfirmed") === "on";
 
   if (!EMAIL_RE.test(email)) {
     throw new Error("Enter a valid email address.");
+  }
+  if (!referralCode) {
+    throw new Error("Referral code is required.");
   }
 
   // Creator.email and the linked User.email (their login) are separate
@@ -83,12 +87,16 @@ export async function updateCreatorAction(creatorId: string, formData: FormData)
     await db.$transaction([
       db.creator.update({
         where: { id: creatorId },
-        data: { name, email, phone, instagram, status, participationConfirmed },
+        data: { name, email, phone, instagram, referralCode, status, participationConfirmed },
       }),
       db.user.update({ where: { creatorId }, data: { email } }),
     ]);
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const target = Array.isArray(err.meta?.target) ? err.meta.target.join(",") : "";
+      if (target.includes("referralCode")) {
+        throw new Error("That referral code is already in use by another creator.");
+      }
       throw new Error("That email is already in use by another creator or admin.");
     }
     throw err;
@@ -104,10 +112,11 @@ export async function updateCreatorAction(creatorId: string, formData: FormData)
         email: before.email,
         phone: before.phone,
         instagram: before.instagram,
+        referralCode: before.referralCode,
         status: before.status,
         participationConfirmed: before.participationConfirmed,
       },
-      newValue: { name, email, phone, instagram, status, participationConfirmed },
+      newValue: { name, email, phone, instagram, referralCode, status, participationConfirmed },
     },
   });
 

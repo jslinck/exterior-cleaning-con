@@ -130,6 +130,23 @@ export default async function AdminCreatorDetailPage({
               />
             </div>
             <div className="flex flex-col gap-2">
+              <label htmlFor="referralCode" className={labelClasses}>
+                Referral Code
+              </label>
+              <input
+                id="referralCode"
+                name="referralCode"
+                required
+                defaultValue={creator.referralCode}
+                className={inputClasses}
+              />
+              <p className="text-xs text-bone/40">
+                Changes their referral link immediately. Anyone who already clicked the old link
+                stays correctly attributed — but the old link itself stops working for new
+                visitors, so update anywhere it&apos;s posted (bio links, ads, etc.).
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
               <label htmlFor="status" className={labelClasses}>
                 Status
               </label>
