@@ -57,12 +57,19 @@
 
 html {
   scroll-behavior: smooth;
+  /* Reserves the vertical scrollbar's width from first paint instead of
+     only once content is measured tall enough to need it — without this,
+     browsers with a classic (non-overlay) scrollbar briefly render wider
+     than their final width, and everything centered on the page visibly
+     shifts left once the scrollbar appears. */
+  scrollbar-gutter: stable;
 }
 
 body {
   background: var(--color-ink);
   color: var(--color-bone);
   font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 .font-display {
